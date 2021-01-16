@@ -1,7 +1,8 @@
 <template>
   <div class="mx-auto mt-20 w-11/12">
     <div class="bg-white rounded-sm shadow overflow-y-auto relative mt-2">
-      <div>
+      <div v-if="loading">Loading...</div>
+      <div v-else>
         <table
           class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
         >
@@ -40,7 +41,7 @@
                 Amount
               </th>
               <th
-                class="w-40 text-center bg-gray-100 sticky top-0 border-solid border border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs"
+                class="text-center bg-gray-100 sticky top-0 border-solid border border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs"
               >
                 Account
               </th>
@@ -51,12 +52,16 @@
               </th>
               <th
                 class="w-4 bg-gray-100 sticky top-0 border-solid border border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs"
-              ></th>
+              >
+              </th>
             </tr>
           </thead>
           <tbody>
             <template>
-              <tr class="max-h-2 hover:bg-gray-50 cursor-pointer">
+              <tr
+                v-for="transaction in transactions.data"
+                :key="transaction.id"
+                class="max-h-2 hover:bg-gray-50 cursor-pointer">
                 <td class="border-dashed border-t border-gray-200 px-3">
                   <label
                     class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
@@ -69,35 +74,54 @@
                 </td>
                 <td class="border-solid border border-gray-200">
                   <span class="text-gray-700 px-6 py-1 flex items-center"
-                    >2021-01-30</span
+                    >{{transaction.date}}</span
                   >
                 </td>
                 <td class="border-solid border border-gray-200">
                   <span class="text-gray-700 px-6 py-1 flex items-center"
-                    >Coffee</span
+                    >{{transaction.category}}</span
                   >
                 </td>
                 <td class="border-solid border border-gray-200">
                   <span class="text-gray-700 px-6 py-1 flex items-center"
-                    >Cafe</span
+                    >{{transaction.payee}}</span
                   >
                 </td>
                 <td class="border-solid border border-gray-200">
                   <span class="text-gray-700 px-6 py-1 flex items-center"
-                    >$8.00</span
+                    >${{transaction.amount}}</span
                   >
                 </td>
                 <td class="border-solid border border-gray-200">
                   <span class="text-gray-700 px-6 py-1 flex items-center"
-                    >Everyday Spending</span
+                    >{{transaction.account}}</span
                   >
                 </td>
                 <td class="border-solid border border-gray-200">
                   <span class="text-gray-700 px-6 py-1 flex items-center"
-                    >Coffee with friend</span
+                    >{{transaction.notes}}</span
                   >
                 </td>
-                <td class="border-solid border border-gray-200"></td>
+                <td class="border-solid border border-gray-200">
+                  <div class="flex flex-col justify-center items-center">
+                    <span class="">
+                      <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </span>
+                  </div>
+                </td>
               </tr>
             </template>
           </tbody>
