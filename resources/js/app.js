@@ -1,4 +1,6 @@
 import Vue from 'vue';
+
+import store from './store'
 require('./bootstrap');
 
 import dataTable from './dataTable.vue'
@@ -8,4 +10,5 @@ new Vue({
     components: {
         dataTable
     },
+    store
 });

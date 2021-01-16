@@ -108,9 +108,28 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
+  data: () => ({
+    loading: true,
+  }),
+
   mounted() {
-    console.log("Example component mounted");
+    console.log("loaded");
+    this.fetchTransactions();
+  },
+
+  computed: mapGetters({
+    transactions: "transactions/transactions",
+  }),
+
+  methods: {
+    async fetchTransactions() {
+      //Fetch transactions
+      await this.$store.dispatch("transactions/fetchTransactions");
+      this.loading = false;
+    },
   },
 };
 </script>
