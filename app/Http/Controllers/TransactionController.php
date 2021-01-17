@@ -12,4 +12,29 @@ class TransactionController extends Controller
     {
         return TransactionResource::collection(Transaction::paginate(25))->response();
     }
+
+    public function store() {
+        $transaction = request()->validate([
+            'date' => 'required|date',
+            'category' => 'required|max:255',
+            'payee' => '',
+            'amount' => 'required',
+            'notes' => '',
+            'account' => 'required|max:255',
+        ]);
+
+        return Transaction::create($transaction);
+    }
+
+    public function update(Transaction $transaction)
+    {
+        return $transaction->update([
+            'date' => request('date'),
+            'category' => request('category'),
+            'payee' => request('payee'),
+            'amount' => request('amount'),
+            'notes' => request('notes'),
+            'account' => request('account'),
+        ]);
+    }
 }

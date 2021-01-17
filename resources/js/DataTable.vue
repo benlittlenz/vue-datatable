@@ -101,7 +101,8 @@
           class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
         >
           <thead>
-            <tr class="text-left h-6">
+            <tr
+              class="text-left h-6">
               <th
                 class="w-8 py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100"
               >
@@ -182,6 +183,7 @@
                 v-for="transaction in transactionList"
                 :key="transaction.id"
                 class="max-h-2 hover:bg-gray-50 cursor-pointer"
+                v-on:click="updateTransaction(transaction)"
               >
                 <td class="border-dashed border-t border-gray-200 px-3">
                   <label
@@ -250,8 +252,13 @@
       </div>
     </div>
     <div v-if="openCreateTransactionModal === true">
-      <createTransactionModal
+      <createTransactionModal v-on:close-modal="closeModal" />
+    </div>
+
+    <div v-if="editRecurring === true">
+      <editTransactionModal
         v-on:close-modal="closeModal"
+        :transaction="transaction"
       />
     </div>
   </div>
@@ -262,21 +269,25 @@ import { createLogger, mapGetters } from "vuex";
 const _ = require("lodash");
 
 import createTransactionModal from "./Components/createTransactionModal";
+import editTransactionModal from "./Components/editTransactionModal";
 
 export default {
   data: () => ({
     loading: true,
+    transaction: null,
     columns: ["date", "category", "payee", "amount", "account", "notes"],
     sort: {
       column: "date",
-      direction: "asc",
+      direction: "desc",
     },
     searchQuery: "",
     openCreateTransactionModal: false,
+    openEditTransactionModal: false,
   }),
 
   components: {
     createTransactionModal,
+    editTransactionModal,
   },
 
   mounted() {
@@ -338,6 +349,12 @@ export default {
 
     closeModal() {
       this.openCreateTransactionModal = false;
+    },
+
+    updateTransaction(record) {
+      console.log(record);
+      this.openEditTransactionModal = true;
+      this.transaction = record;
     },
   },
 };

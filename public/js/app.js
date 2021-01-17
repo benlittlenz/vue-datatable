@@ -2132,9 +2132,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/dataTable.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/DataTable.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/dataTable.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/DataTable.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -2145,14 +2145,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.mjs");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.mjs");
 /* harmony import */ var _Components_createTransactionModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Components/createTransactionModal */ "./resources/js/Components/createTransactionModal.vue");
+/* harmony import */ var _Components_editTransactionModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Components/editTransactionModal */ "./resources/js/Components/editTransactionModal.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2417,27 +2425,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       loading: true,
+      transaction: null,
       columns: ["date", "category", "payee", "amount", "account", "notes"],
       sort: {
         column: "date",
-        direction: "asc"
+        direction: "desc"
       },
       searchQuery: "",
-      openCreateTransactionModal: false
+      openCreateTransactionModal: false,
+      openEditTransactionModal: false
     };
   },
   components: {
-    createTransactionModal: _Components_createTransactionModal__WEBPACK_IMPORTED_MODULE_1__.default
+    createTransactionModal: _Components_createTransactionModal__WEBPACK_IMPORTED_MODULE_1__.default,
+    editTransactionModal: _Components_editTransactionModal__WEBPACK_IMPORTED_MODULE_2__.default
   },
   mounted: function mounted() {
     console.log("loaded");
     this.fetchTransactions();
   },
-  computed: Object.assign({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
+  computed: Object.assign({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     transactions: "transactions/transactions"
   }), {
     transactionList: function transactionList() {
@@ -2495,6 +2507,11 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
     },
     closeModal: function closeModal() {
       this.openCreateTransactionModal = false;
+    },
+    updateTransaction: function updateTransaction(record) {
+      console.log(record);
+      this.openEditTransactionModal = true;
+      this.transaction = record;
     }
   }
 });
@@ -2511,14 +2528,14 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
-/* harmony import */ var _dataTable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dataTable.vue */ "./resources/js/dataTable.vue");
+/* harmony import */ var _DataTable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataTable.vue */ "./resources/js/DataTable.vue");
 
 
 
 new vue__WEBPACK_IMPORTED_MODULE_2__.default({
   el: '#app',
   components: {
-    dataTable: _dataTable_vue__WEBPACK_IMPORTED_MODULE_1__.default
+    DataTable: _DataTable_vue__WEBPACK_IMPORTED_MODULE_1__.default
   },
   store: _store__WEBPACK_IMPORTED_MODULE_0__.default
 });
@@ -2603,6 +2620,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mutation_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mutation-types */ "./resources/js/store/mutation-types.js");
 
 
+var _mutations;
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -2621,13 +2640,18 @@ var getters = {
   }
 }; // mutations
 
-var mutations = _defineProperty({}, _mutation_types__WEBPACK_IMPORTED_MODULE_2__.FETCH_TRANSACTIONS, function (state, _ref) {
+var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_2__.FETCH_TRANSACTIONS, function (state, _ref) {
   var transactions = _ref.transactions;
   state.transactions = transactions;
-}); // actions
+}), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_2__.CREATE_TRANSACTION, function (state, _ref2) {
+  var data = _ref2.data;
+  state.transactions.data.push({
+    data: data
+  });
+}), _mutations); // actions
 
 var actions = {
-  fetchTransactions: function fetchTransactions(_ref2) {
+  fetchTransactions: function fetchTransactions(_ref3) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
       var commit, _yield$axios$get, data;
 
@@ -2635,7 +2659,7 @@ var actions = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref2.commit;
+              commit = _ref3.commit;
               _context.prev = 1;
               _context.next = 4;
               return axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/transactions');
@@ -2662,6 +2686,33 @@ var actions = {
         }
       }, _callee, null, [[1, 10]]);
     }))();
+  },
+  createTransaction: function createTransaction(_ref4, _ref5) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      var commit, data;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref4.commit;
+              data = _ref5.data;
+              console.log("DATA", data);
+              commit(_mutation_types__WEBPACK_IMPORTED_MODULE_2__.CREATE_TRANSACTION, {
+                data: data
+              });
+              _context2.next = 6;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/transactions', data);
+
+            case 6:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 7:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
   }
 };
 
@@ -2676,10 +2727,12 @@ var actions = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FETCH_TRANSACTIONS": () => /* binding */ FETCH_TRANSACTIONS
+/* harmony export */   "FETCH_TRANSACTIONS": () => /* binding */ FETCH_TRANSACTIONS,
+/* harmony export */   "CREATE_TRANSACTION": () => /* binding */ CREATE_TRANSACTION
 /* harmony export */ });
 // Transactions
 var FETCH_TRANSACTIONS = 'FETCH_TRANSACTIONS';
+var CREATE_TRANSACTION = 'CREATE_TRANSACTION';
 
 /***/ }),
 
@@ -21962,9 +22015,43 @@ component.options.__file = "resources/js/Components/createTransactionModal.vue"
 
 /***/ }),
 
-/***/ "./resources/js/dataTable.vue":
+/***/ "./resources/js/Components/editTransactionModal.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/Components/editTransactionModal.vue ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__.default)(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/Components/editTransactionModal.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/DataTable.vue":
 /*!************************************!*\
-  !*** ./resources/js/dataTable.vue ***!
+  !*** ./resources/js/DataTable.vue ***!
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -21973,8 +22060,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _dataTable_vue_vue_type_template_id_e1250894___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dataTable.vue?vue&type=template&id=e1250894& */ "./resources/js/dataTable.vue?vue&type=template&id=e1250894&");
-/* harmony import */ var _dataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dataTable.vue?vue&type=script&lang=js& */ "./resources/js/dataTable.vue?vue&type=script&lang=js&");
+/* harmony import */ var _DataTable_vue_vue_type_template_id_81e6a8d4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DataTable.vue?vue&type=template&id=81e6a8d4& */ "./resources/js/DataTable.vue?vue&type=template&id=81e6a8d4&");
+/* harmony import */ var _DataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataTable.vue?vue&type=script&lang=js& */ "./resources/js/DataTable.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -21984,9 +22071,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _dataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _dataTable_vue_vue_type_template_id_e1250894___WEBPACK_IMPORTED_MODULE_0__.render,
-  _dataTable_vue_vue_type_template_id_e1250894___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _DataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _DataTable_vue_vue_type_template_id_81e6a8d4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _DataTable_vue_vue_type_template_id_81e6a8d4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -21996,7 +22083,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/dataTable.vue"
+component.options.__file = "resources/js/DataTable.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -22017,9 +22104,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/dataTable.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/DataTable.vue?vue&type=script&lang=js&":
 /*!*************************************************************!*\
-  !*** ./resources/js/dataTable.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/DataTable.vue?vue&type=script&lang=js& ***!
   \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -22028,8 +22115,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_dataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./dataTable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/dataTable.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_dataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DataTable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/DataTable.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -22050,19 +22137,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/dataTable.vue?vue&type=template&id=e1250894&":
+/***/ "./resources/js/DataTable.vue?vue&type=template&id=81e6a8d4&":
 /*!*******************************************************************!*\
-  !*** ./resources/js/dataTable.vue?vue&type=template&id=e1250894& ***!
+  !*** ./resources/js/DataTable.vue?vue&type=template&id=81e6a8d4& ***!
   \*******************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dataTable_vue_vue_type_template_id_e1250894___WEBPACK_IMPORTED_MODULE_0__.render,
-/* harmony export */   "staticRenderFns": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dataTable_vue_vue_type_template_id_e1250894___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns
+/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTable_vue_vue_type_template_id_81e6a8d4___WEBPACK_IMPORTED_MODULE_0__.render,
+/* harmony export */   "staticRenderFns": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTable_vue_vue_type_template_id_81e6a8d4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dataTable_vue_vue_type_template_id_e1250894___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./dataTable.vue?vue&type=template&id=e1250894& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/dataTable.vue?vue&type=template&id=e1250894&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTable_vue_vue_type_template_id_81e6a8d4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DataTable.vue?vue&type=template&id=81e6a8d4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/DataTable.vue?vue&type=template&id=81e6a8d4&");
 
 
 /***/ }),
@@ -22588,9 +22675,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/dataTable.vue?vue&type=template&id=e1250894&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/DataTable.vue?vue&type=template&id=81e6a8d4&":
 /*!**********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/dataTable.vue?vue&type=template&id=e1250894& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/DataTable.vue?vue&type=template&id=81e6a8d4& ***!
   \**********************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -22934,7 +23021,12 @@ var render = function() {
                           {
                             key: transaction.id,
                             staticClass:
-                              "max-h-2 hover:bg-gray-50 cursor-pointer"
+                              "max-h-2 hover:bg-gray-50 cursor-pointer",
+                            on: {
+                              click: function($event) {
+                                return _vm.updateTransaction(transaction)
+                              }
+                            }
                           },
                           [
                             _vm._m(2, true),
@@ -23106,6 +23198,19 @@ var render = function() {
           "div",
           [
             _c("createTransactionModal", {
+              on: { "close-modal": _vm.closeModal }
+            })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.editRecurring === true
+      ? _c(
+          "div",
+          [
+            _c("editTransactionModal", {
+              attrs: { transaction: _vm.transaction },
               on: { "close-modal": _vm.closeModal }
             })
           ],
