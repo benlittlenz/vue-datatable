@@ -11,7 +11,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        return TransactionResource::collection(Transaction::paginate(25))->response();
+        return TransactionResource::collection(Transaction::latest()->paginate(25))->response();
     }
 
     public function store() {
