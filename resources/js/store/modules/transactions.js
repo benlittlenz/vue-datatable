@@ -18,7 +18,18 @@ export const mutations = {
 
     [types.CREATE_TRANSACTION](state, { data }) {
         state.transactions.data.push({ data })
-    }
+    },
+
+    [types.UPDATE_TRANSACTION] (state, data ) {
+        console.log('state', state)
+        console.log('data', data)
+        state.transactions.data = state.transactions.data.map(transaction => {
+            if (transaction.id === data.id) {
+              return Object.assign({}, transaction, data)
+            }
+            return transaction
+          })
+    },
 }
 
 // actions
@@ -39,5 +50,13 @@ export const actions = {
         commit(types.CREATE_TRANSACTION, { data })
 
         return await axios.post('/api/transactions', data)
-    }
+    },
+
+    async updateTransaction({ commit }, payload) {
+        const transactionID = payload.id
+        console.log("ID: ", transactionID)
+        console.log(payload)
+        commit(types.UPDATE_TRANSACTION, payload)
+        return await axios.patch(`/api/transactions/${transactionID}`, payload.data)
+    },
 }

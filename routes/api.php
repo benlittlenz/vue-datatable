@@ -1,8 +1,10 @@
 <?php
 
+use App\Events\TransactionCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransactionController;
+use App\Models\Transaction;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +23,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('transactions', [TransactionController::class, 'index']);
 Route::post('transactions', [TransactionController::class, 'store']);
-Route::patch('transactions', [TransactionController::class, 'update']);
+Route::patch('transactions/{transaction}', [TransactionController::class, 'update']);

@@ -101,8 +101,7 @@
           class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
         >
           <thead>
-            <tr
-              class="text-left h-6">
+            <tr class="text-left h-6">
               <th
                 class="w-8 py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100"
               >
@@ -255,7 +254,7 @@
       <createTransactionModal v-on:close-modal="closeModal" />
     </div>
 
-    <div v-if="editRecurring === true">
+    <div v-if="openEditTransactionModal === true">
       <editTransactionModal
         v-on:close-modal="closeModal"
         :transaction="transaction"
@@ -291,8 +290,17 @@ export default {
   },
 
   mounted() {
-    console.log("loaded");
+    //console.log('hey',)
+    console.log("loaded", process.env.MIX_PUSHER_APP_CLUSTER);
     this.fetchTransactions();
+
+    window.Echo.channel("transactions").listen(
+      "TransactionCreated",
+      (event) => {
+        console.log("event", event);
+        this.fetchTransactions();
+      }
+    );
   },
 
   computed: Object.assign(
@@ -349,10 +357,10 @@ export default {
 
     closeModal() {
       this.openCreateTransactionModal = false;
+      this.openEditTransactionModal = false;
     },
 
     updateTransaction(record) {
-      console.log(record);
       this.openEditTransactionModal = true;
       this.transaction = record;
     },

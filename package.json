@@ -18,6 +18,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "laravel-echo": "^1.10.0",
+        "pusher-js": "^5.1.1",
         "tailwindcss": "^2.0.2",
         "vform": "^1.0.1",
         "vue": "^2.6.12",

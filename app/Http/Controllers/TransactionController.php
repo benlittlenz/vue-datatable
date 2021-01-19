@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransactionCreated;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Resources\TransactionResource;
@@ -14,7 +15,7 @@ class TransactionController extends Controller
     }
 
     public function store() {
-        $transaction = request()->validate([
+        $data = request()->validate([
             'date' => 'required|date',
             'category' => 'required|max:255',
             'payee' => '',
@@ -23,7 +24,11 @@ class TransactionController extends Controller
             'account' => 'required|max:255',
         ]);
 
-        return Transaction::create($transaction);
+        $transaction = Transaction::create($data);
+
+        broadcast(new TransactionCreated($transaction))->toOthers();
+
+        return $transaction;
     }
 
     public function update(Transaction $transaction)
