@@ -29,7 +29,9 @@ class TransactionCreated implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'hey' => 'There'
+            'transaction' => [
+                'id' => $this->transaction->id
+            ]
         ];
     }
 

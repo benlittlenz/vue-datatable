@@ -298,7 +298,9 @@ export default {
       "TransactionCreated",
       (event) => {
         console.log("event", event);
-        this.fetchTransactions();
+        if(event.transaction.id) {
+          this.fetchTransactions();
+        }
       }
     );
   },

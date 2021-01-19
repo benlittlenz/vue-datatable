@@ -2749,7 +2749,9 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
     window.Echo.channel("transactions").listen("TransactionCreated", function (event) {
       console.log("event", event);
 
-      _this.fetchTransactions();
+      if (event.transaction.id) {
+        _this.fetchTransactions();
+      }
     });
   },
   computed: Object.assign({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
