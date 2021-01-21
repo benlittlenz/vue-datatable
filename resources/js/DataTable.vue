@@ -252,6 +252,10 @@
         </table>
       </div>
     </div>
+<div class="absolute right-0 mr-20">
+          <Pagination :meta="this.transactions.meta"/>
+    </div>
+
     <div v-if="openCreateTransactionModal === true">
       <createTransactionModal v-on:close-modal="closeModal" />
     </div>
@@ -271,6 +275,7 @@ const _ = require("lodash");
 
 import createTransactionModal from "./Components/createTransactionModal";
 import editTransactionModal from "./Components/editTransactionModal";
+import Pagination from "./Components/Pagination"
 
 export default {
   data: () => ({
@@ -290,6 +295,7 @@ export default {
   components: {
     createTransactionModal,
     editTransactionModal,
+    Pagination
   },
 
   mounted() {
