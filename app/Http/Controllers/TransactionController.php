@@ -9,9 +9,10 @@ use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return TransactionResource::collection(Transaction::latest()->paginate(25))->response();
+        $pageLimit = $request->limit;
+        return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
     }
 
     public function store() {

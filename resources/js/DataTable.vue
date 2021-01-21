@@ -72,6 +72,8 @@
         </button>
         <div class="relative ml-4">
           <select
+            v-model="limit"
+            @change="fetchTransactions"
             class="appearance-none h-full rounded border block appearance-none w-full bg-white text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white"
           >
             <option>25</option>
@@ -273,6 +275,7 @@ import editTransactionModal from "./Components/editTransactionModal";
 export default {
   data: () => ({
     loading: true,
+    limit: 25,
     transaction: null,
     columns: ["date", "category", "payee", "amount", "account", "notes"],
     sort: {
@@ -294,15 +297,15 @@ export default {
     console.log("loaded", process.env.MIX_PUSHER_APP_CLUSTER);
     this.fetchTransactions();
 
-    window.Echo.channel("transactions").listen(
-      "TransactionCreated",
-      (event) => {
-        console.log("event", event);
-        if(event.transaction.id) {
-          this.fetchTransactions();
-        }
-      }
-    );
+    // window.Echo.channel("transactions").listen(
+    //   "TransactionCreated",
+    //   (event) => {
+    //     console.log("event", event);
+    //     if(event.transaction.id) {
+    //       this.fetchTransactions();
+    //     }
+    //   }
+    // );
   },
 
   computed: Object.assign(
@@ -345,7 +348,10 @@ export default {
   methods: {
     async fetchTransactions() {
       //Fetch transactions
-      await this.$store.dispatch("transactions/fetchTransactions");
+      const limit = this.limit
+      await this.$store.dispatch("transactions/fetchTransactions", {
+        limit
+      });
       this.loading = false;
     },
 

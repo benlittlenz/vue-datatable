@@ -45,30 +45,3 @@ class TransactionCreated implements ShouldBroadcast
         return new Channel('transactions');
     }
 }
-
-// class TransactionCreated implements ShouldBroadcast
-// {
-//     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-//     public $transaction;
-
-//     /**
-//      * Create a new event instance.
-//      *
-//      * @return void
-//      */
-//     public function __construct(Transaction $transaction)
-//     {
-//         $this->transaction = $transaction;
-//     }
-
-//     /**
-//      * Get the channels the event should broadcast on.
-//      *
-//      * @return \Illuminate\Broadcasting\Channel|array
-//      */
-//     public function broadcastOn()
-//     {
-//         return new Channel('transactions');
-//     }
-// }
