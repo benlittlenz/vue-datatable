@@ -252,7 +252,7 @@
         </table>
       </div>
     </div>
-<div class="absolute right-0 mr-20">
+    <div class="absolute right-0 mr-20">
           <Pagination
             :meta="this.transactions.meta"
             v-on:page-change="fetchTransactions"

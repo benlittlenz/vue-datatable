@@ -1910,11 +1910,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["meta"],
   methods: {
     changePage: function changePage(page) {
-      this.$emit('page-change', page);
+      this.$emit("page-change", page);
     }
   }
 });
@@ -22738,7 +22741,13 @@ var render = function() {
         {
           staticClass:
             "mr-4 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150",
-          attrs: { href: "#" }
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.changePage(_vm.meta.current_page - 1)
+            }
+          }
         },
         [
           _c(
@@ -22765,14 +22774,17 @@ var render = function() {
     _vm._v(" "),
     _c(
       "ul",
-      { staticClass: "flex pl-0 list-none rounded my-2" },
+      { staticClass: "flex pl-0 list-none rounded" },
       _vm._l(_vm.meta.last_page, function(page) {
         return _c("li", { key: page }, [
           _c(
             "a",
             {
               staticClass:
-                "pr-1 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150",
+                "px-3 py-2 text-center inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none transition ease-in-out duration-150",
+              class: {
+                "bg-indigo-500 text-white": _vm.meta.current_page === page
+              },
               attrs: { href: "#" },
               on: {
                 click: function($event) {
@@ -22794,7 +22806,13 @@ var render = function() {
         {
           staticClass:
             "ml-4 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150",
-          attrs: { href: "#" }
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.changePage(_vm.meta.current_page + 1)
+            }
+          }
         },
         [
           _vm._v("\n      Next\n      "),
@@ -24032,7 +24050,7 @@ var render = function() {
                 ])
               ]
             ),
-            _vm._v("\n          Filter\n        ")
+            _vm._v("\n        Filter\n      ")
           ]
         ),
         _vm._v(" "),

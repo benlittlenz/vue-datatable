@@ -2,6 +2,7 @@
   <div class="flex items-center py-4 w-64">
     <div class="flex items-center">
       <a
+        @click.prevent="changePage(meta.current_page - 1)"
         href="#"
         class="mr-4 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150"
       >
@@ -19,12 +20,13 @@
         Previous
       </a>
     </div>
-    <ul class="flex pl-0 list-none rounded my-2">
+    <ul class="flex pl-0 list-none rounded">
       <li v-for="page in meta.last_page" :key="page">
         <a
           @click.prevent="changePage(page)"
           href="#"
-          class="pr-1 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150"
+          class="px-3 py-2 text-center inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none transition ease-in-out duration-150"
+          :class="{ 'bg-indigo-500 text-white': meta.current_page === page }"
         >
           {{ page }}
         </a>
@@ -32,6 +34,7 @@
     </ul>
     <div class="flex justify-end">
       <a
+        @click.prevent="changePage(meta.current_page + 1)"
         href="#"
         class="ml-4 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150"
       >
@@ -57,9 +60,9 @@ export default {
   props: ["meta"],
 
   methods: {
-      changePage(page) {
-          this.$emit('page-change', page)
-      }
-  }
+    changePage(page) {
+      this.$emit("page-change", page);
+    },
+  },
 };
 </script>
