@@ -253,7 +253,10 @@
       </div>
     </div>
 <div class="absolute right-0 mr-20">
-          <Pagination :meta="this.transactions.meta"/>
+          <Pagination
+            :meta="this.transactions.meta"
+            v-on:page-change="fetchTransactions"
+          />
     </div>
 
     <div v-if="openCreateTransactionModal === true">
@@ -352,11 +355,12 @@ export default {
   ),
 
   methods: {
-    async fetchTransactions() {
+    async fetchTransactions(page = 1) {
       //Fetch transactions
       const limit = this.limit
       await this.$store.dispatch("transactions/fetchTransactions", {
-        limit
+        limit,
+        page
       });
       this.loading = false;
     },

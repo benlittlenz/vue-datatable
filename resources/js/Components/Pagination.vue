@@ -22,6 +22,7 @@
     <ul class="flex pl-0 list-none rounded my-2">
       <li v-for="page in meta.last_page" :key="page">
         <a
+          @click.prevent="changePage(page)"
           href="#"
           class="pr-1 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150"
         >
@@ -54,5 +55,11 @@
 <script>
 export default {
   props: ["meta"],
+
+  methods: {
+      changePage(page) {
+          this.$emit('page-change', page)
+      }
+  }
 };
 </script>

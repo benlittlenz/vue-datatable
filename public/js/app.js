@@ -1909,8 +1909,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["meta"]
+  props: ["meta"],
+  methods: {
+    changePage: function changePage(page) {
+      this.$emit('page-change', page);
+    }
+  }
 });
 
 /***/ }),
@@ -2792,6 +2798,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
@@ -2861,25 +2870,28 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
   }),
   methods: {
     fetchTransactions: function fetchTransactions() {
-      var _this2 = this;
+      var _arguments = arguments,
+          _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var limit;
+        var page, limit;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
                 //Fetch transactions
                 limit = _this2.limit;
-                _context.next = 3;
+                _context.next = 4;
                 return _this2.$store.dispatch("transactions/fetchTransactions", {
-                  limit: limit
+                  limit: limit,
+                  page: page
                 });
 
-              case 3:
+              case 4:
                 _this2.loading = false;
 
-              case 4:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -3064,17 +3076,17 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
 var actions = {
   fetchTransactions: function fetchTransactions(_ref3, _ref4) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      var commit, limit, _yield$axios$get, data;
+      var commit, limit, page, _yield$axios$get, data;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               commit = _ref3.commit;
-              limit = _ref4.limit;
+              limit = _ref4.limit, page = _ref4.page;
               _context.prev = 2;
               _context.next = 5;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/transactions?limit=".concat(limit));
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/transactions?limit=".concat(limit, "&page=").concat(page));
 
             case 5:
               _yield$axios$get = _context.sent;
@@ -22761,7 +22773,13 @@ var render = function() {
             {
               staticClass:
                 "pr-1 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium hover:text-gray-800 hover:bg-gray-100 rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150",
-              attrs: { href: "#" }
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.changePage(page)
+                }
+              }
             },
             [_vm._v("\n        " + _vm._s(page) + "\n      ")]
           )
@@ -24411,7 +24429,12 @@ var render = function() {
     _c(
       "div",
       { staticClass: "absolute right-0 mr-20" },
-      [_c("Pagination", { attrs: { meta: this.transactions.meta } })],
+      [
+        _c("Pagination", {
+          attrs: { meta: this.transactions.meta },
+          on: { "page-change": _vm.fetchTransactions }
+        })
+      ],
       1
     ),
     _vm._v(" "),
