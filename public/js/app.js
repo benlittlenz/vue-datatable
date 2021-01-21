@@ -1917,6 +1917,11 @@ __webpack_require__.r(__webpack_exports__);
   props: ["meta"],
   methods: {
     changePage: function changePage(page) {
+      // Add out of bounds check
+      if (page <= 0 || page > this.meta.last_page) {
+        return;
+      }
+
       this.$emit("page-change", page);
     }
   }
