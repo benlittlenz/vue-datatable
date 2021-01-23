@@ -2535,6 +2535,40 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2829,7 +2863,8 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       },
       searchQuery: "",
       openCreateTransactionModal: false,
-      openEditTransactionModal: false
+      openEditTransactionModal: false,
+      selected: []
     };
   },
   components: {
@@ -2838,28 +2873,27 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
     Pagination: _Components_Pagination__WEBPACK_IMPORTED_MODULE_3__.default
   },
   mounted: function mounted() {
-    //console.log('hey',)
-    console.log("loaded", "mt1");
-    this.fetchTransactions(); // window.Echo.channel("transactions").listen(
-    //   "TransactionCreated",
-    //   (event) => {
-    //     console.log("event", event);
-    //     if(event.transaction.id) {
-    //       this.fetchTransactions();
-    //     }
-    //   }
-    // );
+    var _this = this;
+
+    this.fetchTransactions();
+    window.Echo.channel("transactions").listen("TransactionCreated", function (event) {
+      console.log("event", event);
+
+      if (event.transaction.id) {
+        _this.fetchTransactions();
+      }
+    });
   },
   computed: Object.assign({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)({
     transactions: "transactions/transactions"
   }), {
     transactionList: function transactionList() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.searchQuery) {
         return this.transactions.data.filter(function (transaction) {
           return Object.keys(transaction).some(function (key) {
-            return String(transaction[key]).toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+            return String(transaction[key]).toLowerCase().indexOf(_this2.searchQuery.toLowerCase()) > -1;
           });
         });
       }
@@ -2874,12 +2908,23 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       } else {
         return [];
       }
+    },
+    checked: function checked() {
+      if (this.transactionList.length === this.selected.length) {
+        console.log("it does");
+      } else {
+        console.log("it doesnt");
+      }
+
+      return this.transactionList.length === this.selected.length ? true : false;
     }
   }),
-  methods: {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)({
+    deleteTransactions: "transactions/deleteTransactions"
+  })), {}, {
     fetchTransactions: function fetchTransactions() {
       var _arguments = arguments,
-          _this2 = this;
+          _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var page, limit;
@@ -2889,15 +2934,15 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
                 //Fetch transactions
-                limit = _this2.limit;
+                limit = _this3.limit;
                 _context.next = 4;
-                return _this2.$store.dispatch("transactions/fetchTransactions", {
+                return _this3.$store.dispatch("transactions/fetchTransactions", {
                   limit: limit,
                   page: page
                 });
 
               case 4:
-                _this2.loading = false;
+                _this3.loading = false;
 
               case 5:
               case "end":
@@ -2921,8 +2966,39 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
     updateTransaction: function updateTransaction(record) {
       this.openEditTransactionModal = true;
       this.transaction = record;
+    },
+    selectAllCheckboxes: function selectAllCheckboxes() {
+      if (this.selected.length > 0) {
+        this.selected = [];
+        return;
+      }
+
+      this.selected = this.transactionList.map(function (transaction) {
+        return transaction.id;
+      });
+    },
+    deleteRecords: function deleteRecords() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this4.deleteTransactions({
+                  transactions: _this4.selected
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     }
-  }
+  })
 });
 
 /***/ }),
@@ -3069,6 +3145,9 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
   state.transactions.data.push({
     data: data
   });
+}), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_2__.DELETE_TRANSACTION, function (state, _ref3) {
+  var data = _ref3.data;
+  console.log('data:', data); //state.transactions.data.push({ data })
 }), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_2__.UPDATE_TRANSACTION, function (state, data) {
   console.log('state', state);
   console.log('data', data);
@@ -3082,7 +3161,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
 }), _mutations); // actions
 
 var actions = {
-  fetchTransactions: function fetchTransactions(_ref3, _ref4) {
+  fetchTransactions: function fetchTransactions(_ref4, _ref5) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
       var commit, limit, page, _yield$axios$get, data;
 
@@ -3090,8 +3169,8 @@ var actions = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref3.commit;
-              limit = _ref4.limit, page = _ref4.page;
+              commit = _ref4.commit;
+              limit = _ref5.limit, page = _ref5.page;
               _context.prev = 2;
               _context.next = 5;
               return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/transactions?limit=".concat(limit, "&page=").concat(page));
@@ -3118,15 +3197,15 @@ var actions = {
       }, _callee, null, [[2, 10]]);
     }))();
   },
-  createTransaction: function createTransaction(_ref5, _ref6) {
+  createTransaction: function createTransaction(_ref6, _ref7) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
       var commit, data;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref5.commit;
-              data = _ref6.data;
+              commit = _ref6.commit;
+              data = _ref7.data;
               console.log("DATA", data);
               commit(_mutation_types__WEBPACK_IMPORTED_MODULE_2__.CREATE_TRANSACTION, {
                 data: data
@@ -3145,14 +3224,14 @@ var actions = {
       }, _callee2);
     }))();
   },
-  updateTransaction: function updateTransaction(_ref7, payload) {
+  updateTransaction: function updateTransaction(_ref8, payload) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
       var commit, transactionID;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref7.commit;
+              commit = _ref8.commit;
               transactionID = payload.id;
               console.log("ID: ", transactionID);
               console.log(payload);
@@ -3186,12 +3265,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "FETCH_TRANSACTIONS": () => /* binding */ FETCH_TRANSACTIONS,
 /* harmony export */   "CREATE_TRANSACTION": () => /* binding */ CREATE_TRANSACTION,
-/* harmony export */   "UPDATE_TRANSACTION": () => /* binding */ UPDATE_TRANSACTION
+/* harmony export */   "UPDATE_TRANSACTION": () => /* binding */ UPDATE_TRANSACTION,
+/* harmony export */   "DELETE_TRANSACTION": () => /* binding */ DELETE_TRANSACTION
 /* harmony export */ });
 // Transactions
 var FETCH_TRANSACTIONS = 'FETCH_TRANSACTIONS';
 var CREATE_TRANSACTION = 'CREATE_TRANSACTION';
 var UPDATE_TRANSACTION = 'UPDATE_TRANSACTION';
+var DELETE_TRANSACTION = 'DELETE_TRANSACTION';
 
 /***/ }),
 
@@ -23909,6 +23990,13 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "mx-auto mt-20 w-11/12" }, [
+    _vm._v(
+      "\n  " +
+        _vm._s(_vm.selected) +
+        "\n  checked " +
+        _vm._s(_vm.checked) +
+        "\n  "
+    ),
     _c("div", { staticClass: "rounded-lg" }, [
       _c(
         "button",
@@ -24020,6 +24108,51 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "flex items-center" }, [
+        _vm.selected.length
+          ? _c("div", { staticClass: "mx-4" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg inline-flex items-center",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.deleteRecords($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "svg",
+                    {
+                      staticClass: "w-5 h-5",
+                      attrs: {
+                        fill: "none",
+                        stroke: "currentColor",
+                        viewBox: "0 0 24 24",
+                        xmlns: "http://www.w3.org/2000/svg"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round",
+                          "stroke-width": "2",
+                          d:
+                            "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "pl-2" }, [_vm._v("Delete")])
+                ]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "button",
           {
@@ -24153,7 +24286,31 @@ var render = function() {
                       "tr",
                       { staticClass: "text-left h-6" },
                       [
-                        _vm._m(0),
+                        _c(
+                          "th",
+                          {
+                            staticClass:
+                              "w-8 py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100"
+                          },
+                          [
+                            _c(
+                              "label",
+                              {
+                                staticClass:
+                                  "text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+                              },
+                              [
+                                _c("input", {
+                                  staticClass:
+                                    "form-checkbox focus:outline-none focus:shadow-outline",
+                                  attrs: { type: "checkbox" },
+                                  domProps: { checked: _vm.checked },
+                                  on: { change: _vm.selectAllCheckboxes }
+                                })
+                              ]
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _vm._l(_vm.columns, function(column, index) {
                           return _c(
@@ -24285,7 +24442,70 @@ var render = function() {
                             }
                           },
                           [
-                            _vm._m(1, true),
+                            _c(
+                              "td",
+                              {
+                                staticClass:
+                                  "border-dashed border-t border-gray-200 px-3"
+                              },
+                              [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.selected,
+                                          expression: "selected"
+                                        }
+                                      ],
+                                      staticClass:
+                                        "form-checkbox rowCheckbox focus:outline-none focus:shadow-outline",
+                                      attrs: { type: "checkbox" },
+                                      domProps: {
+                                        value: transaction.id,
+                                        checked: Array.isArray(_vm.selected)
+                                          ? _vm._i(
+                                              _vm.selected,
+                                              transaction.id
+                                            ) > -1
+                                          : _vm.selected
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = _vm.selected,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = transaction.id,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                (_vm.selected = $$a.concat([
+                                                  $$v
+                                                ]))
+                                            } else {
+                                              $$i > -1 &&
+                                                (_vm.selected = $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1)))
+                                            }
+                                          } else {
+                                            _vm.selected = $$c
+                                          }
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            ),
                             _vm._v(" "),
                             _c(
                               "td",
@@ -24487,61 +24707,7 @@ var render = function() {
       : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "th",
-      {
-        staticClass:
-          "w-8 py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100"
-      },
-      [
-        _c(
-          "label",
-          {
-            staticClass:
-              "text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
-          },
-          [
-            _c("input", {
-              staticClass:
-                "form-checkbox focus:outline-none focus:shadow-outline",
-              attrs: { type: "checkbox" }
-            })
-          ]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "td",
-      { staticClass: "border-dashed border-t border-gray-200 px-3" },
-      [
-        _c(
-          "label",
-          {
-            staticClass:
-              "text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
-          },
-          [
-            _c("input", {
-              staticClass:
-                "form-checkbox rowCheckbox focus:outline-none focus:shadow-outline",
-              attrs: { type: "checkbox" }
-            })
-          ]
-        )
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

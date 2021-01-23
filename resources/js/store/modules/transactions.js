@@ -20,6 +20,12 @@ export const mutations = {
         state.transactions.data.push({ data })
     },
 
+    [types.DELETE_TRANSACTION](state, { data }) {
+        console.log('data:', data);
+        //state.transactions.data.push({ data })
+
+    },
+
     [types.UPDATE_TRANSACTION] (state, data ) {
         console.log('state', state)
         console.log('data', data)
@@ -58,4 +64,6 @@ export const actions = {
         commit(types.UPDATE_TRANSACTION, payload)
         return await axios.patch(`/api/transactions/${transactionID}`, payload.data)
     },
+
+
 }

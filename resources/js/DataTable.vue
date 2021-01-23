@@ -1,5 +1,7 @@
 <template>
   <div class="mx-auto mt-20 w-11/12">
+    {{ selected }}
+    checked {{ checked }}
     <div class="rounded-lg">
       <button
         v-on:click="openCreateTransactionModal = true"
@@ -50,6 +52,28 @@
         </div>
       </div>
       <div class="flex items-center">
+        <div v-if="selected.length" class="mx-4">
+          <button
+          @click.prevent="deleteRecords"
+          class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg inline-flex items-center"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+          <span class="pl-2">Delete</span>
+        </button>
+        </div>
         <button
           type="button"
           @click="open = !open"
@@ -113,6 +137,8 @@
                   <input
                     type="checkbox"
                     class="form-checkbox focus:outline-none focus:shadow-outline"
+                    @change="selectAllCheckboxes"
+                    :checked="checked"
                   />
                 </label>
               </th>
@@ -191,6 +217,8 @@
                     class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
                   >
                     <input
+                      v-model="selected"
+                      :value="transaction.id"
                       type="checkbox"
                       class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
                     />
@@ -253,10 +281,10 @@
       </div>
     </div>
     <div class="absolute right-0 mr-20">
-          <Pagination
-            :meta="this.transactions.meta"
-            v-on:page-change="fetchTransactions"
-          />
+      <Pagination
+        :meta="this.transactions.meta"
+        v-on:page-change="fetchTransactions"
+      />
     </div>
 
     <div v-if="openCreateTransactionModal === true">
@@ -273,12 +301,12 @@
 </template>
 
 <script>
-import { createLogger, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 const _ = require("lodash");
 
 import createTransactionModal from "./Components/createTransactionModal";
 import editTransactionModal from "./Components/editTransactionModal";
-import Pagination from "./Components/Pagination"
+import Pagination from "./Components/Pagination";
 
 export default {
   data: () => ({
@@ -293,28 +321,27 @@ export default {
     searchQuery: "",
     openCreateTransactionModal: false,
     openEditTransactionModal: false,
+    selected: [],
   }),
 
   components: {
     createTransactionModal,
     editTransactionModal,
-    Pagination
+    Pagination,
   },
 
   mounted() {
-    //console.log('hey',)
-    console.log("loaded", process.env.MIX_PUSHER_APP_CLUSTER);
     this.fetchTransactions();
 
-    // window.Echo.channel("transactions").listen(
-    //   "TransactionCreated",
-    //   (event) => {
-    //     console.log("event", event);
-    //     if(event.transaction.id) {
-    //       this.fetchTransactions();
-    //     }
-    //   }
-    // );
+    window.Echo.channel("transactions").listen(
+      "TransactionCreated",
+      (event) => {
+        console.log("event", event);
+        if (event.transaction.id) {
+          this.fetchTransactions();
+        }
+      }
+    );
   },
 
   computed: Object.assign(
@@ -351,16 +378,30 @@ export default {
           return [];
         }
       },
+
+      checked() {
+        if (this.transactionList.length === this.selected.length) {
+          console.log("it does");
+        } else {
+          console.log("it doesnt");
+        }
+        return this.transactionList.length === this.selected.length
+          ? true
+          : false;
+      },
     }
   ),
 
   methods: {
+    ...mapActions({
+      deleteTransactions: "transactions/deleteTransactions",
+    }),
     async fetchTransactions(page = 1) {
       //Fetch transactions
-      const limit = this.limit
+      const limit = this.limit;
       await this.$store.dispatch("transactions/fetchTransactions", {
         limit,
-        page
+        page,
       });
       this.loading = false;
     },
@@ -381,6 +422,20 @@ export default {
     updateTransaction(record) {
       this.openEditTransactionModal = true;
       this.transaction = record;
+    },
+
+    selectAllCheckboxes() {
+      if (this.selected.length > 0) {
+        this.selected = [];
+        return;
+      }
+      this.selected = this.transactionList.map((transaction) => transaction.id);
+    },
+
+    async deleteRecords() {
+      await this.deleteTransactions({
+        transactions: this.selected
+      });
     },
   },
 };
