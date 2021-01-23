@@ -2525,10 +2525,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.mjs");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.mjs");
 /* harmony import */ var _Components_createTransactionModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Components/createTransactionModal */ "./resources/js/Components/createTransactionModal.vue");
 /* harmony import */ var _Components_editTransactionModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Components/editTransactionModal */ "./resources/js/Components/editTransactionModal.vue");
 /* harmony import */ var _Components_Pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Components/Pagination */ "./resources/js/Components/Pagination.vue");
+/* harmony import */ var _Components_DeleteModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Components/DeleteModal */ "./resources/js/Components/DeleteModal.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2541,6 +2542,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
 //
 //
 //
@@ -2850,6 +2854,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2864,13 +2869,15 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       searchQuery: "",
       openCreateTransactionModal: false,
       openEditTransactionModal: false,
-      selected: []
+      selected: [],
+      openConfirmDeleteModal: false
     };
   },
   components: {
     createTransactionModal: _Components_createTransactionModal__WEBPACK_IMPORTED_MODULE_1__.default,
     editTransactionModal: _Components_editTransactionModal__WEBPACK_IMPORTED_MODULE_2__.default,
-    Pagination: _Components_Pagination__WEBPACK_IMPORTED_MODULE_3__.default
+    Pagination: _Components_Pagination__WEBPACK_IMPORTED_MODULE_3__.default,
+    DeleteModal: _Components_DeleteModal__WEBPACK_IMPORTED_MODULE_4__.default
   },
   mounted: function mounted() {
     var _this = this;
@@ -2884,7 +2891,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       }
     });
   },
-  computed: Object.assign({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)({
+  computed: Object.assign({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapGetters)({
     transactions: "transactions/transactions"
   }), {
     transactionList: function transactionList() {
@@ -2919,7 +2926,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       return this.transactionList.length === this.selected.length ? true : false;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapActions)({
     deleteTransactions: "transactions/deleteTransactions"
   })), {}, {
     fetchTransactions: function fetchTransactions() {
@@ -2962,6 +2969,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
     closeModal: function closeModal() {
       this.openCreateTransactionModal = false;
       this.openEditTransactionModal = false;
+      this.openConfirmDeleteModal = false;
     },
     updateTransaction: function updateTransaction(record) {
       this.openEditTransactionModal = true;
@@ -2991,6 +2999,13 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
                 });
 
               case 2:
+                _context2.next = 4;
+                return _this4.fetchTransactions();
+
+              case 4:
+                _this4.selected = [];
+
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -3145,9 +3160,6 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
   state.transactions.data.push({
     data: data
   });
-}), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_2__.DELETE_TRANSACTION, function (state, _ref3) {
-  var data = _ref3.data;
-  console.log('data:', data); //state.transactions.data.push({ data })
 }), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_2__.UPDATE_TRANSACTION, function (state, data) {
   console.log('state', state);
   console.log('data', data);
@@ -3161,7 +3173,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
 }), _mutations); // actions
 
 var actions = {
-  fetchTransactions: function fetchTransactions(_ref4, _ref5) {
+  fetchTransactions: function fetchTransactions(_ref3, _ref4) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
       var commit, limit, page, _yield$axios$get, data;
 
@@ -3169,8 +3181,8 @@ var actions = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref4.commit;
-              limit = _ref5.limit, page = _ref5.page;
+              commit = _ref3.commit;
+              limit = _ref4.limit, page = _ref4.page;
               _context.prev = 2;
               _context.next = 5;
               return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/transactions?limit=".concat(limit, "&page=").concat(page));
@@ -3197,15 +3209,15 @@ var actions = {
       }, _callee, null, [[2, 10]]);
     }))();
   },
-  createTransaction: function createTransaction(_ref6, _ref7) {
+  createTransaction: function createTransaction(_ref5, _ref6) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
       var commit, data;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref6.commit;
-              data = _ref7.data;
+              commit = _ref5.commit;
+              data = _ref6.data;
               console.log("DATA", data);
               commit(_mutation_types__WEBPACK_IMPORTED_MODULE_2__.CREATE_TRANSACTION, {
                 data: data
@@ -3224,14 +3236,14 @@ var actions = {
       }, _callee2);
     }))();
   },
-  updateTransaction: function updateTransaction(_ref8, payload) {
+  updateTransaction: function updateTransaction(_ref7, payload) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
       var commit, transactionID;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref8.commit;
+              commit = _ref7.commit;
               transactionID = payload.id;
               console.log("ID: ", transactionID);
               console.log(payload);
@@ -3248,6 +3260,29 @@ var actions = {
           }
         }
       }, _callee3);
+    }))();
+  },
+  deleteTransactions: function deleteTransactions(_ref8, _ref9) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+      var commit, transactions;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              commit = _ref8.commit;
+              transactions = _ref9.transactions;
+              _context4.next = 4;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().delete("/api/transactions/".concat(transactions));
+
+            case 4:
+              return _context4.abrupt("return", _context4.sent);
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
     }))();
   }
 };
@@ -22516,6 +22551,40 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./resources/js/Components/DeleteModal.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/Components/DeleteModal.vue ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__.default)(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/Components/DeleteModal.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/Components/Pagination.vue":
 /*!************************************************!*\
   !*** ./resources/js/Components/Pagination.vue ***!
@@ -24118,7 +24187,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.deleteRecords($event)
+                      _vm.openConfirmDeleteModal = true
                     }
                   }
                 },
@@ -24702,6 +24771,14 @@ var render = function() {
               on: { "close-modal": _vm.closeModal }
             })
           ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.openConfirmDeleteModal
+      ? _c(
+          "div",
+          [_c("DeleteModal", { on: { "close-modal": _vm.closeModal } })],
           1
         )
       : _vm._e()

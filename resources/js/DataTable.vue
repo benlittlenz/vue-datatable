@@ -54,25 +54,25 @@
       <div class="flex items-center">
         <div v-if="selected.length" class="mx-4">
           <button
-          @click.prevent="deleteRecords"
-          class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg inline-flex items-center"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+            @click.prevent="openConfirmDeleteModal = true"
+            class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg inline-flex items-center"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            ></path>
-          </svg>
-          <span class="pl-2">Delete</span>
-        </button>
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              ></path>
+            </svg>
+            <span class="pl-2">Delete</span>
+          </button>
         </div>
         <button
           type="button"
@@ -297,6 +297,9 @@
         :transaction="transaction"
       />
     </div>
+    <div v-if="openConfirmDeleteModal">
+      <DeleteModal v-on:close-modal="closeModal" />
+    </div>
   </div>
 </template>
 
@@ -307,6 +310,7 @@ const _ = require("lodash");
 import createTransactionModal from "./Components/createTransactionModal";
 import editTransactionModal from "./Components/editTransactionModal";
 import Pagination from "./Components/Pagination";
+import DeleteModal from "./Components/DeleteModal";
 
 export default {
   data: () => ({
@@ -322,12 +326,14 @@ export default {
     openCreateTransactionModal: false,
     openEditTransactionModal: false,
     selected: [],
+    openConfirmDeleteModal: false,
   }),
 
   components: {
     createTransactionModal,
     editTransactionModal,
     Pagination,
+    DeleteModal,
   },
 
   mounted() {
@@ -417,6 +423,7 @@ export default {
     closeModal() {
       this.openCreateTransactionModal = false;
       this.openEditTransactionModal = false;
+      this.openConfirmDeleteModal = false;
     },
 
     updateTransaction(record) {
@@ -434,8 +441,12 @@ export default {
 
     async deleteRecords() {
       await this.deleteTransactions({
-        transactions: this.selected
+        transactions: this.selected,
       });
+
+      await this.fetchTransactions();
+
+      this.selected = [];
     },
   },
 };

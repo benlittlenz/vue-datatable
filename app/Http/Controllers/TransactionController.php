@@ -43,4 +43,9 @@ class TransactionController extends Controller
             'account' => request('account'),
         ]);
     }
+
+    public function destroy($transactions)
+    {
+        Transaction::whereIn('id', explode(',', $transactions))->delete();
+    }
 }

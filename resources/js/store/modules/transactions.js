@@ -20,11 +20,17 @@ export const mutations = {
         state.transactions.data.push({ data })
     },
 
-    [types.DELETE_TRANSACTION](state, { data }) {
-        console.log('data:', data);
-        //state.transactions.data.push({ data })
+    // [types.DELETE_TRANSACTION](state, { transactions }) {
+    //     console.log('data:', transactions);
+    //     console.log(state.transactions.data);
 
-    },
+    //     transactions.map(transaction => {
+    //         let index = state.transactions.data.findIndex(item => transaction === item.id)
+    //         console.log('index: ', index);
+    //         state.transactions.data.splice(index, 1);
+    //     })
+
+    // },
 
     [types.UPDATE_TRANSACTION] (state, data ) {
         console.log('state', state)
@@ -65,5 +71,7 @@ export const actions = {
         return await axios.patch(`/api/transactions/${transactionID}`, payload.data)
     },
 
-
+    async deleteTransactions({ commit }, { transactions }) {
+        return await axios.delete(`/api/transactions/${transactions}`)
+    },
 }
