@@ -16,27 +16,39 @@ class TransactionController extends Controller
         //dd($filters);
         $pageLimit = $request->limit;
         //dd($filters);
-        if ($filters) {
-        return TransactionResource::collection(
-            Transaction::query()
-                ->when($filters->column !== 'date', function ($query) use ($filters) {
-                    $query->where($filters->column, $filters->value);
-                })
-                ->when($filters->column === 'date', function ($query) use ($filters) {
-                    $query->whereBetween('date', [Carbon::parse($filters->fromDate)->format('Y-m-d'), Carbon::parse($filters->toDate)->format('Y-m-d')]);
-                })
-                ->when($filters->operator === 'is not blank', function ($query) use ($filters) {
-                    $query->whereNotNull($filters->column);
-                })
-                ->when($filters->operator === 'is blank', function ($query) use ($filters) {
-                    $query->whereNull($filters->column);
 
-                })
-                ->paginate($pageLimit)
-        )->response();
+        $query = Transaction::query();
 
-
+        foreach ($filters as $filter) {
+            if ($filter->column == 'date') {
+                $query->whereBetween('date', [Carbon::parse($filter->fromDate)->format('Y-m-d'), Carbon::parse($filter->toDate)->format('Y-m-d')]);
+            } else {
+                $query->where($filter->column, $filter->operator ?? '=', $filter->value);
+            }
         }
+
+        return TransactionResource::collection($query->paginate($pageLimit));
+        // if ($filters) {
+        // return TransactionResource::collection(
+        //     Transaction::query()
+        //         ->when($filters->column !== 'date', function ($query) use ($filters) {
+        //             $query->where($filters->column, $filters->value);
+        //         })
+        //         ->when($filters->column === 'date', function ($query) use ($filters) {
+        //             $query->whereBetween('date', [Carbon::parse($filters->fromDate)->format('Y-m-d'), Carbon::parse($filters->toDate)->format('Y-m-d')]);
+        //         })
+        //         ->when($filters->operator === 'is not blank', function ($query) use ($filters) {
+        //             $query->whereNotNull($filters->column);
+        //         })
+        //         ->when($filters->operator === 'is blank', function ($query) use ($filters) {
+        //             $query->whereNull($filters->column);
+
+        //         })
+        //         ->paginate($pageLimit)
+        // )->response();
+
+
+        // }
         return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
     }
 

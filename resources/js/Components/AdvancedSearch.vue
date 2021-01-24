@@ -7,86 +7,88 @@
       class="bg-white rounded-lg pt-5 shadow-xl transform transition-all max-w-2xl"
     >
       {{ search }}
-      <div class="flex items-center px-6">
-        <div class="relative mb-4">
-          <label class="block">
-            <label for="email" class="text-sm leading-7 text-gray-600"
-              >Filter By</label
-            >
-            <select
-              v-model="search.column"
-              class="block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none"
-            >
-              <option
-                v-for="(column, index) in columns"
-                :key="index"
-                :value="column"
+      <template v-for="(_, searchIndex) in search">
+        <div :key="index" class="flex items-center px-6">
+          <div class="relative mb-4">
+            <label class="block">
+              <label for="email" class="text-sm leading-7 text-gray-600"
+                >Filter By</label
               >
-                {{ column.charAt(0).toUpperCase() + column.slice(1) }}
-              </option>
-            </select>
-          </label>
+              <select
+                v-model="search[searchIndex].column"
+                class="block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none"
+              >
+                <option
+                  v-for="(column, index) in columns"
+                  :key="index"
+                  :value="column"
+                >
+                  {{ column.charAt(0).toUpperCase() + column.slice(1) }}
+                </option>
+              </select>
+            </label>
+          </div>
+          <div v-if="search[searchIndex].column !== 'date'" class="relative mb-4 px-4">
+            <label class="block">
+              <label for="operator" class="text-sm leading-7 text-gray-600"
+                >Operator</label
+              >
+              <select
+                @change="transformOperator"
+                class="block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none"
+              >
+                <option value="equals">Equals</option>
+                <option value="contains">Contains</option>
+                <option value="does not contain">Does Not Contain</option>
+                <option value="is not blank">Not Blank</option>
+                <option value="is blank">Is Blank</option>
+              </select>
+            </label>
+          </div>
+          <div v-else class="relative mb-4 px-4">
+            <label class="block">
+              <label for="operator" class="text-sm leading-7 text-gray-600"
+                >From</label
+              >
+              <div class="block w-full py-1 border-transparent rounded-lg">
+                <date-picker
+                  v-model="search[searchIndex].fromDate"
+                  type="date"
+                  format="DD/MM/YYYY"
+                ></date-picker>
+              </div>
+            </label>
+          </div>
+          <div v-if="search[searchIndex].column !== 'date'" class="relative mb-4">
+            <label class="block">
+              <label for="email" class="text-sm leading-7 text-gray-600"
+                >Value</label
+              >
+              <input
+                v-model="search[searchIndex].value"
+                placeholder="Search..."
+                id="value"
+                type="text"
+                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+              />
+            </label>
+          </div>
+          <div v-else class="relative mb-4">
+            <label class="block">
+              <label for="operator" class="text-sm leading-7 text-gray-600"
+                >To</label
+              >
+              <div class="block w-full py-1 border-transparent rounded-lg">
+                <date-picker
+                  v-model="search[searchIndex].toDate"
+                  type="date"
+                  format="DD/MM/YYYY"
+                ></date-picker>
+              </div>
+            </label>
+          </div>
         </div>
-        <div v-if="search.column !== 'date'" class="relative mb-4 px-4">
-          <label class="block">
-            <label for="operator" class="text-sm leading-7 text-gray-600"
-              >Operator</label
-            >
-            <select
-              @change="transformOperator"
-              class="block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none"
-            >
-              <option value="equals">Equals</option>
-              <option value="contains">Contains</option>
-              <option value="does not contain">Does Not Contain</option>
-              <option value="is not blank">Not Blank</option>
-              <option value="is blank">Is Blank</option>
-            </select>
-          </label>
-        </div>
-        <div v-else class="relative mb-4 px-4">
-          <label class="block">
-            <label for="operator" class="text-sm leading-7 text-gray-600"
-              >From</label
-            >
-            <div class="block w-full py-1 border-transparent rounded-lg">
-              <date-picker
-                v-model="search.fromDate"
-                type="date"
-                format="DD/MM/YYYY"
-              ></date-picker>
-            </div>
-          </label>
-        </div>
-        <div v-if="search.column !== 'date'" class="relative mb-4">
-          <label class="block">
-            <label for="email" class="text-sm leading-7 text-gray-600"
-              >Value</label
-            >
-            <input
-              v-model="search.value"
-              placeholder="Search..."
-              id="value"
-              type="text"
-              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-            />
-          </label>
-        </div>
-        <div v-else class="relative mb-4">
-          <label class="block">
-            <label for="operator" class="text-sm leading-7 text-gray-600"
-              >To</label
-            >
-            <div class="block w-full py-1 border-transparent rounded-lg">
-              <date-picker
-                v-model="search.toDate"
-                type="date"
-                format="DD/MM/YYYY"
-              ></date-picker>
-            </div>
-          </label>
-        </div>
-      </div>
+      </template>
 
       <div class="flex justify-end bg-gray-50 py-2 mt-5 px-4">
         <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
@@ -117,13 +119,16 @@ import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 export default {
   data: () => ({
-    search: {
-      fromDate: "",
-      toDate: "",
-      column: "date",
-      operator: "=",
-      value: "",
-    },
+    search: [
+      {
+        fromDate: "",
+        toDate: "",
+        column: "date",
+        operator: "=",
+        value: "",
+      },
+      { fromDate: "", toDate: "", column: "date", operator: "=", value: "" },
+    ],
   }),
   components: {
     DatePicker,
@@ -139,23 +144,27 @@ export default {
       else if (operator === "contains") this.search.operator = "LIKE";
       else if (operator === "does not contain")
         this.search.operator = "NOT LIKE";
-      else this.search.operator = operator
+      else this.search.operator = operator;
     },
     closeModal() {
       this.$emit("close-modal");
     },
     applyFilters() {
-      this.$emit("apply-filters", {
-        fromDate: this.search.fromDate
-          ? new Date(this.search.fromDate).toISOString().substring(0, 10)
+      let filterArr = []
+      this.search.map(filter => {
+        filterArr.push({
+        fromDate: filter.fromDate
+          ? new Date(filter.fromDate).toISOString().substring(0, 10)
           : "",
-        toDate: this.search.toDate
-          ? new Date(this.search.toDate).toISOString().substring(0, 10)
+        toDate: filter.toDate
+          ? new Date(filter.toDate).toISOString().substring(0, 10)
           : "",
-        column: this.search.column,
-        operator: this.search.operator,
-        value: this.search.value,
-      });
+        column: filter.column,
+        operator: filter.operator,
+        value: filter.value,
+      })
+      })
+      this.$emit("apply-filters", filterArr);
     },
   },
 };

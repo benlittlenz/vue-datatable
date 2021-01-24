@@ -1972,18 +1972,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      search: {
+      search: [{
         fromDate: "",
         toDate: "",
         column: "date",
         operator: "=",
         value: ""
-      }
+      }, {
+        fromDate: "",
+        toDate: "",
+        column: "date",
+        operator: "=",
+        value: ""
+      }]
     };
   },
   components: {
@@ -1999,13 +2007,17 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("close-modal");
     },
     applyFilters: function applyFilters() {
-      this.$emit("apply-filters", {
-        fromDate: this.search.fromDate ? new Date(this.search.fromDate).toISOString().substring(0, 10) : "",
-        toDate: this.search.toDate ? new Date(this.search.toDate).toISOString().substring(0, 10) : "",
-        column: this.search.column,
-        operator: this.search.operator,
-        value: this.search.value
+      var filterArr = [];
+      this.search.map(function (filter) {
+        filterArr.push({
+          fromDate: filter.fromDate ? new Date(filter.fromDate).toISOString().substring(0, 10) : "",
+          toDate: filter.toDate ? new Date(filter.toDate).toISOString().substring(0, 10) : "",
+          column: filter.column,
+          operator: filter.operator,
+          value: filter.value
+        });
       });
+      this.$emit("apply-filters", filterArr);
     }
   }
 });
@@ -23349,222 +23361,247 @@ var render = function() {
         },
         [
           _vm._v("\n    " + _vm._s(_vm.search) + "\n    "),
-          _c("div", { staticClass: "flex items-center px-6" }, [
-            _c("div", { staticClass: "relative mb-4" }, [
-              _c("label", { staticClass: "block" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "text-sm leading-7 text-gray-600",
-                    attrs: { for: "email" }
-                  },
-                  [_vm._v("Filter By")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.search.column,
-                        expression: "search.column"
-                      }
-                    ],
-                    staticClass:
-                      "block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none",
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.search,
-                          "column",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  _vm._l(_vm.columns, function(column, index) {
-                    return _c(
-                      "option",
-                      { key: index, domProps: { value: column } },
-                      [
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(
-                              column.charAt(0).toUpperCase() + column.slice(1)
-                            ) +
-                            "\n            "
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _vm.search.column !== "date"
-              ? _c("div", { staticClass: "relative mb-4 px-4" }, [
-                  _c("label", { staticClass: "block" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "text-sm leading-7 text-gray-600",
-                        attrs: { for: "operator" }
-                      },
-                      [_vm._v("Operator")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass:
-                          "block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none",
-                        on: { change: _vm.transformOperator }
-                      },
-                      [
-                        _c("option", { attrs: { value: "equals" } }, [
-                          _vm._v("Equals")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "contains" } }, [
-                          _vm._v("Contains")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "does not contain" } }, [
-                          _vm._v("Does Not Contain")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "is not blank" } }, [
-                          _vm._v("Not Blank")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "is blank" } }, [
-                          _vm._v("Is Blank")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              : _c("div", { staticClass: "relative mb-4 px-4" }, [
-                  _c("label", { staticClass: "block" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "text-sm leading-7 text-gray-600",
-                        attrs: { for: "operator" }
-                      },
-                      [_vm._v("From")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "block w-full py-1 border-transparent rounded-lg"
-                      },
-                      [
-                        _c("date-picker", {
-                          attrs: { type: "date", format: "DD/MM/YYYY" },
-                          model: {
-                            value: _vm.search.fromDate,
-                            callback: function($$v) {
-                              _vm.$set(_vm.search, "fromDate", $$v)
-                            },
-                            expression: "search.fromDate"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ])
-                ]),
-            _vm._v(" "),
-            _vm.search.column !== "date"
-              ? _c("div", { staticClass: "relative mb-4" }, [
-                  _c("label", { staticClass: "block" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "text-sm leading-7 text-gray-600",
-                        attrs: { for: "email" }
-                      },
-                      [_vm._v("Value")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+          _vm._l(_vm.search, function(_, searchIndex) {
+            return [
+              _c(
+                "div",
+                { key: _vm.index, staticClass: "flex items-center px-6" },
+                [
+                  _c("div", { staticClass: "relative mb-4" }, [
+                    _c("label", { staticClass: "block" }, [
+                      _c(
+                        "label",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.search.value,
-                          expression: "search.value"
-                        }
-                      ],
-                      staticClass:
-                        "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5",
-                      attrs: {
-                        placeholder: "Search...",
-                        id: "value",
-                        type: "text"
-                      },
-                      domProps: { value: _vm.search.value },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                          staticClass: "text-sm leading-7 text-gray-600",
+                          attrs: { for: "email" }
+                        },
+                        [_vm._v("Filter By")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.search[searchIndex].column,
+                              expression: "search[searchIndex].column"
+                            }
+                          ],
+                          staticClass:
+                            "block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.search[searchIndex],
+                                "column",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
                           }
-                          _vm.$set(_vm.search, "value", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ])
-              : _c("div", { staticClass: "relative mb-4" }, [
-                  _c("label", { staticClass: "block" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "text-sm leading-7 text-gray-600",
-                        attrs: { for: "operator" }
-                      },
-                      [_vm._v("To")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "block w-full py-1 border-transparent rounded-lg"
-                      },
-                      [
-                        _c("date-picker", {
-                          attrs: { type: "date", format: "DD/MM/YYYY" },
-                          model: {
-                            value: _vm.search.toDate,
-                            callback: function($$v) {
-                              _vm.$set(_vm.search, "toDate", $$v)
+                        },
+                        _vm._l(_vm.columns, function(column, index) {
+                          return _c(
+                            "option",
+                            { key: index, domProps: { value: column } },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(
+                                    column.charAt(0).toUpperCase() +
+                                      column.slice(1)
+                                  ) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.search[searchIndex].column !== "date"
+                    ? _c("div", { staticClass: "relative mb-4 px-4" }, [
+                        _c("label", { staticClass: "block" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "text-sm leading-7 text-gray-600",
+                              attrs: { for: "operator" }
                             },
-                            expression: "search.toDate"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ])
-                ])
-          ]),
+                            [_vm._v("Operator")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass:
+                                "block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none",
+                              on: { change: _vm.transformOperator }
+                            },
+                            [
+                              _c("option", { attrs: { value: "equals" } }, [
+                                _vm._v("Equals")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "contains" } }, [
+                                _vm._v("Contains")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                { attrs: { value: "does not contain" } },
+                                [_vm._v("Does Not Contain")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                { attrs: { value: "is not blank" } },
+                                [_vm._v("Not Blank")]
+                              ),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "is blank" } }, [
+                                _vm._v("Is Blank")
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    : _c("div", { staticClass: "relative mb-4 px-4" }, [
+                        _c("label", { staticClass: "block" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "text-sm leading-7 text-gray-600",
+                              attrs: { for: "operator" }
+                            },
+                            [_vm._v("From")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "block w-full py-1 border-transparent rounded-lg"
+                            },
+                            [
+                              _c("date-picker", {
+                                attrs: { type: "date", format: "DD/MM/YYYY" },
+                                model: {
+                                  value: _vm.search[searchIndex].fromDate,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.search[searchIndex],
+                                      "fromDate",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "search[searchIndex].fromDate"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ])
+                      ]),
+                  _vm._v(" "),
+                  _vm.search[searchIndex].column !== "date"
+                    ? _c("div", { staticClass: "relative mb-4" }, [
+                        _c("label", { staticClass: "block" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "text-sm leading-7 text-gray-600",
+                              attrs: { for: "email" }
+                            },
+                            [_vm._v("Value")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.search[searchIndex].value,
+                                expression: "search[searchIndex].value"
+                              }
+                            ],
+                            staticClass:
+                              "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5",
+                            attrs: {
+                              placeholder: "Search...",
+                              id: "value",
+                              type: "text"
+                            },
+                            domProps: { value: _vm.search[searchIndex].value },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.search[searchIndex],
+                                  "value",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    : _c("div", { staticClass: "relative mb-4" }, [
+                        _c("label", { staticClass: "block" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "text-sm leading-7 text-gray-600",
+                              attrs: { for: "operator" }
+                            },
+                            [_vm._v("To")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "block w-full py-1 border-transparent rounded-lg"
+                            },
+                            [
+                              _c("date-picker", {
+                                attrs: { type: "date", format: "DD/MM/YYYY" },
+                                model: {
+                                  value: _vm.search[searchIndex].toDate,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.search[searchIndex],
+                                      "toDate",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "search[searchIndex].toDate"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ])
+                      ])
+                ]
+              )
+            ]
+          }),
           _vm._v(" "),
           _c(
             "div",
@@ -23611,7 +23648,8 @@ var render = function() {
               )
             ]
           )
-        ]
+        ],
+        2
       )
     ]
   )
