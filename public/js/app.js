@@ -1972,17 +1972,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       search: {
-        fromDate: '',
-        toDate: '',
+        fromDate: "",
+        toDate: "",
         column: "date",
         operator: "=",
         value: ""
@@ -1994,18 +1991,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ["columns"],
   methods: {
-    transformOperator: function transformOperator(event) {
+    transformOperator: function transformOperator() {
       var operator = event.target.value;
-      console.log("op", operator);
-      if (operator === "equals") this.search.operator = "=";else if (operator === "contains") this.search.operator = "LIKE";else if (operator === "does not contain") this.search.operator = "NOT LIKE";
+      if (operator === "equals") this.search.operator = "=";else if (operator === "contains") this.search.operator = "LIKE";else if (operator === "does not contain") this.search.operator = "NOT LIKE";else this.search.operator = operator;
     },
     closeModal: function closeModal() {
       this.$emit("close-modal");
     },
     applyFilters: function applyFilters() {
       this.$emit("apply-filters", {
-        fromDate: new Date(this.search.fromDate).toISOString().substring(0, 10),
-        toDate: new Date(this.search.toDate).toISOString().substring(0, 10),
+        fromDate: this.search.fromDate ? new Date(this.search.fromDate).toISOString().substring(0, 10) : "",
+        toDate: this.search.toDate ? new Date(this.search.toDate).toISOString().substring(0, 10) : "",
         column: this.search.column,
         operator: this.search.operator,
         value: this.search.value
@@ -3102,6 +3098,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
@@ -3127,7 +3142,8 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       openEditTransactionModal: false,
       selected: [],
       openConfirmDeleteModal: false,
-      openFilterModal: false
+      openFilterModal: false,
+      appliedFilters: ""
     };
   },
   components: {
@@ -3292,12 +3308,42 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
               case 3:
                 _this5.openFilterModal = false;
 
-              case 4:
+                _this5.displayFilters(filters);
+
+              case 5:
               case "end":
                 return _context3.stop();
             }
           }
         }, _callee3);
+      }))();
+    },
+    displayFilters: function displayFilters(filters) {
+      var str = "";
+      str += filters.column.charAt(0).toUpperCase() + filters.column.slice(1);
+      str += " ".concat(filters.operator, " ").concat(filters.value);
+      return this.appliedFilters = str;
+    },
+    resetFilters: function resetFilters() {
+      var _this6 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _this6.fetchTransactions(1, '');
+
+              case 2:
+                _this6.appliedFilters = '';
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
       }))();
     }
   })
@@ -24930,7 +24976,7 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "flex items-center mt-4" }, [
-      _c("div", { staticClass: "flex flex-1 pr-4" }, [
+      _c("div", { staticClass: "flex flex-1 items-center pr-4" }, [
         _c("div", { staticClass: "relative md:w-1/3" }, [
           _c("input", {
             directives: [
@@ -24995,7 +25041,47 @@ var render = function() {
               )
             ]
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _vm.appliedFilters
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer"
+              },
+              [
+                _c("button", { on: { click: _vm.resetFilters } }, [
+                  _c(
+                    "svg",
+                    {
+                      staticClass: "w-4 h-4 bg-gray-300 rounded-lg",
+                      attrs: {
+                        fill: "none",
+                        stroke: "currentColor",
+                        viewBox: "0 0 24 24",
+                        xmlns: "http://www.w3.org/2000/svg"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round",
+                          "stroke-width": "2",
+                          d: "M6 18L18 6M6 6l12 12"
+                        }
+                      })
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "ml-1 font-semibold" }, [
+                  _vm._v(_vm._s(_vm.appliedFilters))
+                ])
+              ]
+            )
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "flex items-center" }, [

@@ -2,17 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TransactionCreated;
+use Carbon\Carbon;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Events\TransactionCreated;
 use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
 {
     public function index(Request $request)
     {
+        $filters = json_decode($request->filters);
+        //dd($filters);
+        $pageLimit = $request->limit;
+        //dd($filters);
+        if ($filters) {
+        return TransactionResource::collection(
+            Transaction::query()
+                ->when($filters->column !== 'date', function ($query) use ($filters) {
+                    $query->where($filters->column, $filters->value);
+                })
+                ->when($filters->column === 'date', function ($query) use ($filters) {
+                    $query->whereBetween('date', [Carbon::parse($filters->fromDate)->format('Y-m-d'), Carbon::parse($filters->toDate)->format('Y-m-d')]);
+                })
+                ->when($filters->operator === 'is not blank', function ($query) use ($filters) {
+                    $query->whereNotNull($filters->column);
+                })
+                ->when($filters->operator === 'is blank', function ($query) use ($filters) {
+                    $query->whereNull($filters->column);
 
-        //return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
+                })
+                ->paginate($pageLimit)
+        )->response();
+
+
+        }
+        return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
     }
 
     public function store()

@@ -49,9 +49,7 @@
             <label for="operator" class="text-sm leading-7 text-gray-600"
               >From</label
             >
-            <div
-              class="block w-full py-1 border-transparent rounded-lg"
-            >
+            <div class="block w-full py-1 border-transparent rounded-lg">
               <date-picker
                 v-model="search.fromDate"
                 type="date"
@@ -79,9 +77,7 @@
             <label for="operator" class="text-sm leading-7 text-gray-600"
               >To</label
             >
-            <div
-              class="block w-full py-1 border-transparent rounded-lg"
-            >
+            <div class="block w-full py-1 border-transparent rounded-lg">
               <date-picker
                 v-model="search.toDate"
                 type="date"
@@ -91,6 +87,7 @@
           </label>
         </div>
       </div>
+
       <div class="flex justify-end bg-gray-50 py-2 mt-5 px-4">
         <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
           <button
@@ -121,8 +118,8 @@ import "vue2-datepicker/index.css";
 export default {
   data: () => ({
     search: {
-      fromDate: '',
-      toDate: '',
+      fromDate: "",
+      toDate: "",
       column: "date",
       operator: "=",
       value: "",
@@ -135,22 +132,26 @@ export default {
   props: ["columns"],
 
   methods: {
-    transformOperator(event) {
+    transformOperator() {
       const operator = event.target.value;
-      console.log("op", operator);
 
       if (operator === "equals") this.search.operator = "=";
       else if (operator === "contains") this.search.operator = "LIKE";
       else if (operator === "does not contain")
         this.search.operator = "NOT LIKE";
+      else this.search.operator = operator
     },
     closeModal() {
       this.$emit("close-modal");
     },
     applyFilters() {
       this.$emit("apply-filters", {
-        fromDate: new Date(this.search.fromDate).toISOString().substring(0, 10),
-        toDate: new Date(this.search.toDate).toISOString().substring(0, 10),
+        fromDate: this.search.fromDate
+          ? new Date(this.search.fromDate).toISOString().substring(0, 10)
+          : "",
+        toDate: this.search.toDate
+          ? new Date(this.search.toDate).toISOString().substring(0, 10)
+          : "",
         column: this.search.column,
         operator: this.search.operator,
         value: this.search.value,

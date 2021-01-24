@@ -27,7 +27,7 @@
       </button>
     </div>
     <div class="flex items-center mt-4">
-      <div class="flex flex-1 pr-4">
+      <div class="flex flex-1 items-center pr-4">
         <div class="relative md:w-1/3">
           <input
             v-model="searchQuery"
@@ -51,6 +51,25 @@
               <line x1="21" y1="21" x2="15" y2="15" />
             </svg>
           </div>
+        </div>
+        <div v-if="appliedFilters" class="flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer">
+          <button @click="resetFilters">
+            <svg
+              class="w-4 h-4 bg-gray-300 rounded-lg"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          <span class="ml-1 font-semibold">{{ appliedFilters }}</span>
         </div>
       </div>
       <div class="flex items-center">
@@ -343,6 +362,7 @@ export default {
     selected: [],
     openConfirmDeleteModal: false,
     openFilterModal: false,
+    appliedFilters: "",
   }),
 
   components: {
@@ -475,7 +495,20 @@ export default {
       console.log("filters", filters);
       await this.fetchTransactions(1, JSON.stringify(filters));
       this.openFilterModal = false;
+      this.displayFilters(filters);
     },
+
+    displayFilters(filters) {
+      let str = "";
+      str += filters.column.charAt(0).toUpperCase() + filters.column.slice(1);
+      str += ` ${filters.operator} ${filters.value}`;
+      return (this.appliedFilters = str);
+    },
+
+    async resetFilters() {
+      await this.fetchTransactions(1, '');
+      this.appliedFilters = ''
+    }
   },
 };
 </script>
