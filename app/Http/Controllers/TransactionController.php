@@ -11,11 +11,12 @@ class TransactionController extends Controller
 {
     public function index(Request $request)
     {
-        $pageLimit = $request->limit;
-        return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
+
+        //return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
     }
 
-    public function store() {
+    public function store()
+    {
         $data = request()->validate([
             'date' => 'required|date',
             'category' => 'required|max:255',
@@ -47,5 +48,12 @@ class TransactionController extends Controller
     public function destroy($transactions)
     {
         Transaction::whereIn('id', explode(',', $transactions))->delete();
+    }
+
+    public function getSearchValue($operator, $value)
+    {
+        return $operator === 'LIKE' || $operator === 'NOT LIKE'
+            ?  '%' . $value . '%'
+            : $value;
     }
 }

@@ -46,9 +46,9 @@ export const mutations = {
 
 // actions
 export const actions = {
-    async fetchTransactions({ commit }, { limit, page }) {
+    async fetchTransactions({ commit }, { limit, page, filters }) {
         try {
-            const { data } = await axios.get(`/api/transactions?limit=${limit}&page=${page}`)
+            const { data } = await axios.get(`/api/transactions?limit=${limit}&page=${page}&filters=${filters}`)
 
             commit(types.FETCH_TRANSACTIONS, { transactions: data })
         } catch (e) {

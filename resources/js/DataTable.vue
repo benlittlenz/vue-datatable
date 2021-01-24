@@ -1,7 +1,9 @@
 <template>
   <div class="mx-auto mt-20 w-11/12">
     {{ selected }}
-    checked {{ checked }}
+    checked {{ checked }} <br />
+
+    {{ openEditTransactionModal }}
     <div class="rounded-lg">
       <button
         v-on:click="openCreateTransactionModal = true"
@@ -76,8 +78,8 @@
         </div>
         <button
           type="button"
-          @click="open = !open"
-          class="flex items-center text-gray-700 px-3 py-1 border font-medium rounded"
+          @click="openFilterModal = true"
+          class="flex items-center text-gray-700 px-3 py-1 border font-medium rounded focus:outline-none"
         >
           <svg
             viewBox="0 0 24 24"
@@ -210,7 +212,6 @@
                 v-for="transaction in transactionList"
                 :key="transaction.id"
                 class="max-h-2 hover:bg-gray-50 cursor-pointer"
-                v-on:click="updateTransaction(transaction)"
               >
                 <td class="border-dashed border-t border-gray-200 px-3">
                   <label
@@ -254,7 +255,10 @@
                     transaction.notes
                   }}</span>
                 </td>
-                <td class="border-solid border border-gray-200">
+                <td
+                  v-on:click="updateTransaction(transaction)"
+                  class="border-solid border border-gray-200"
+                >
                   <div class="flex flex-col justify-center items-center">
                     <span class="">
                       <svg
@@ -298,7 +302,17 @@
       />
     </div>
     <div v-if="openConfirmDeleteModal">
-      <DeleteModal v-on:close-modal="closeModal" />
+      <DeleteModal
+        v-on:close-modal="closeModal"
+        v-on:delete-selected="deleteRecords"
+      />
+    </div>
+    <div v-if="openFilterModal">
+      <AdvancedSearch
+        :columns="columns"
+        v-on:close-modal="closeModal"
+        v-on:apply-filters="applyFilters"
+      />
     </div>
   </div>
 </template>
@@ -311,6 +325,7 @@ import createTransactionModal from "./Components/createTransactionModal";
 import editTransactionModal from "./Components/editTransactionModal";
 import Pagination from "./Components/Pagination";
 import DeleteModal from "./Components/DeleteModal";
+import AdvancedSearch from "./Components/AdvancedSearch";
 
 export default {
   data: () => ({
@@ -327,6 +342,7 @@ export default {
     openEditTransactionModal: false,
     selected: [],
     openConfirmDeleteModal: false,
+    openFilterModal: false,
   }),
 
   components: {
@@ -334,6 +350,7 @@ export default {
     editTransactionModal,
     Pagination,
     DeleteModal,
+    AdvancedSearch,
   },
 
   mounted() {
@@ -402,12 +419,13 @@ export default {
     ...mapActions({
       deleteTransactions: "transactions/deleteTransactions",
     }),
-    async fetchTransactions(page = 1) {
+    async fetchTransactions(page = 1, filters = "") {
       //Fetch transactions
       const limit = this.limit;
       await this.$store.dispatch("transactions/fetchTransactions", {
         limit,
         page,
+        filters,
       });
       this.loading = false;
     },
@@ -424,11 +442,14 @@ export default {
       this.openCreateTransactionModal = false;
       this.openEditTransactionModal = false;
       this.openConfirmDeleteModal = false;
+      this.openFilterModal = false;
     },
 
     updateTransaction(record) {
-      this.openEditTransactionModal = true;
-      this.transaction = record;
+      if (this.selected.length === 0) {
+        this.openEditTransactionModal = true;
+        this.transaction = record;
+      }
     },
 
     selectAllCheckboxes() {
@@ -447,6 +468,13 @@ export default {
       await this.fetchTransactions();
 
       this.selected = [];
+      this.openConfirmDeleteModal = false;
+    },
+
+    async applyFilters(filters) {
+      console.log("filters", filters);
+      await this.fetchTransactions(1, JSON.stringify(filters));
+      this.openFilterModal = false;
     },
   },
 };
