@@ -6,9 +6,8 @@
     <div
       class="bg-white rounded-lg pt-5 shadow-xl transform transition-all max-w-2xl"
     >
-      {{ search }}
       <template v-for="(_, searchIndex) in search">
-        <div :key="index" class="flex items-center px-6">
+        <div :key="searchIndex" class="flex items-center px-6">
           <div class="relative mb-4">
             <label class="block">
               <label for="email" class="text-sm leading-7 text-gray-600"
@@ -28,13 +27,16 @@
               </select>
             </label>
           </div>
-          <div v-if="search[searchIndex].column !== 'date'" class="relative mb-4 px-4">
+          <div
+            v-if="search[searchIndex].column !== 'date'"
+            class="relative mb-4 px-4"
+          >
             <label class="block">
               <label for="operator" class="text-sm leading-7 text-gray-600"
                 >Operator</label
               >
               <select
-                @change="transformOperator"
+                v-model="search[searchIndex].operator"
                 class="block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none"
               >
                 <option value="equals">Equals</option>
@@ -59,7 +61,10 @@
               </div>
             </label>
           </div>
-          <div v-if="search[searchIndex].column !== 'date'" class="relative mb-4">
+          <div
+            v-if="search[searchIndex].column !== 'date'"
+            class="relative mb-4"
+          >
             <label class="block">
               <label for="email" class="text-sm leading-7 text-gray-600"
                 >Value</label
@@ -87,9 +92,51 @@
               </div>
             </label>
           </div>
+          <div class="flex items-center mt-2 ml-2">
+            <div v-if="searchIndex !== 0">
+              <button
+                @click="removeFilter(searchIndex)"
+                class="mt-2 hover:bg-gray-200 rounded-full cursor-pointer"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </template>
-
+        <button
+          class="flex items-center mx-2 px-4 py-2 bg-gray-200 text-gray-700 shadow-md rounded-lg mt-2 hover:bg-gray-300 hover:text-gray-900 rounded-full focus:outline-none cursor-pointer"
+          @click="createNewFilter"
+        >
+          <svg
+            class="w-6 h-6 text-green-800"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            ></path>
+          </svg>
+          Add Filter
+        </button>
       <div class="flex justify-end bg-gray-50 py-2 mt-5 px-4">
         <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
           <button
@@ -124,10 +171,9 @@ export default {
         fromDate: "",
         toDate: "",
         column: "date",
-        operator: "=",
+        operator: "",
         value: "",
       },
-      { fromDate: "", toDate: "", column: "date", operator: "=", value: "" },
     ],
   }),
   components: {
@@ -137,35 +183,49 @@ export default {
   props: ["columns"],
 
   methods: {
-    transformOperator() {
-      const operator = event.target.value;
-
-      if (operator === "equals") this.search.operator = "=";
-      else if (operator === "contains") this.search.operator = "LIKE";
-      else if (operator === "does not contain")
-        this.search.operator = "NOT LIKE";
-      else this.search.operator = operator;
+    transformOperator(operator) {
+      //const operator = event.target.value;
+      console.log('op', operator);
+      if (operator === "equals") return "=";
+      else if (operator === "contains") return "LIKE";
+      else if (operator === "does not contain") return "NOT LIKE";
+      else return operator;
     },
     closeModal() {
       this.$emit("close-modal");
     },
     applyFilters() {
-      let filterArr = []
-      this.search.map(filter => {
+      let filterArr = [];
+      this.search.map((filter) => {
         filterArr.push({
-        fromDate: filter.fromDate
-          ? new Date(filter.fromDate).toISOString().substring(0, 10)
-          : "",
-        toDate: filter.toDate
-          ? new Date(filter.toDate).toISOString().substring(0, 10)
-          : "",
-        column: filter.column,
-        operator: filter.operator,
-        value: filter.value,
-      })
-      })
+          fromDate: filter.fromDate
+            ? new Date(filter.fromDate).toISOString().substring(0, 10)
+            : "",
+          toDate: filter.toDate
+            ? new Date(filter.toDate).toISOString().substring(0, 10)
+            : "",
+          column: filter.column,
+          operatorVal: filter.operator,
+          operator: this.transformOperator(filter.operator),
+          value: filter.value,
+        });
+      });
       this.$emit("apply-filters", filterArr);
     },
+
+    createNewFilter() {
+      this.search.push({
+        fromDate: "",
+        toDate: "",
+        column: "date",
+        operator: "=",
+        value: "",
+      });
+    },
+
+    removeFilter(index) {
+      this.search.splice(index, 1)
+    }
   },
 };
 </script>

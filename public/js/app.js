@@ -1974,6 +1974,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -1983,13 +2030,7 @@ __webpack_require__.r(__webpack_exports__);
         fromDate: "",
         toDate: "",
         column: "date",
-        operator: "=",
-        value: ""
-      }, {
-        fromDate: "",
-        toDate: "",
-        column: "date",
-        operator: "=",
+        operator: "",
         value: ""
       }]
     };
@@ -1999,25 +2040,41 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ["columns"],
   methods: {
-    transformOperator: function transformOperator() {
-      var operator = event.target.value;
-      if (operator === "equals") this.search.operator = "=";else if (operator === "contains") this.search.operator = "LIKE";else if (operator === "does not contain") this.search.operator = "NOT LIKE";else this.search.operator = operator;
+    transformOperator: function transformOperator(operator) {
+      //const operator = event.target.value;
+      console.log('op', operator);
+      if (operator === "equals") return "=";else if (operator === "contains") return "LIKE";else if (operator === "does not contain") return "NOT LIKE";else return operator;
     },
     closeModal: function closeModal() {
       this.$emit("close-modal");
     },
     applyFilters: function applyFilters() {
+      var _this = this;
+
       var filterArr = [];
       this.search.map(function (filter) {
         filterArr.push({
           fromDate: filter.fromDate ? new Date(filter.fromDate).toISOString().substring(0, 10) : "",
           toDate: filter.toDate ? new Date(filter.toDate).toISOString().substring(0, 10) : "",
           column: filter.column,
-          operator: filter.operator,
+          operatorVal: filter.operator,
+          operator: _this.transformOperator(filter.operator),
           value: filter.value
         });
       });
       this.$emit("apply-filters", filterArr);
+    },
+    createNewFilter: function createNewFilter() {
+      this.search.push({
+        fromDate: "",
+        toDate: "",
+        column: "date",
+        operator: "=",
+        value: ""
+      });
+    },
+    removeFilter: function removeFilter(index) {
+      this.search.splice(index, 1);
     }
   }
 });
@@ -3155,7 +3212,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       selected: [],
       openConfirmDeleteModal: false,
       openFilterModal: false,
-      appliedFilters: ""
+      appliedFilters: null
     };
   },
   components: {
@@ -3318,9 +3375,9 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
                 return _this5.fetchTransactions(1, JSON.stringify(filters));
 
               case 3:
-                _this5.openFilterModal = false;
+                _this5.openFilterModal = false; //this.displayFilters(filters);
 
-                _this5.displayFilters(filters);
+                _this5.appliedFilters = filters;
 
               case 5:
               case "end":
@@ -3330,13 +3387,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
         }, _callee3);
       }))();
     },
-    displayFilters: function displayFilters(filters) {
-      var str = "";
-      str += filters.column.charAt(0).toUpperCase() + filters.column.slice(1);
-      str += " ".concat(filters.operator, " ").concat(filters.value);
-      return this.appliedFilters = str;
-    },
-    resetFilters: function resetFilters() {
+    removeFilter: function removeFilter(index) {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
@@ -3344,19 +3395,23 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _context4.next = 2;
-                return _this6.fetchTransactions(1, '');
+                console.log('INDEX', index);
 
-              case 2:
-                _this6.appliedFilters = '';
+                _this6.appliedFilters.splice(index, 1);
 
-              case 3:
+                _context4.next = 4;
+                return _this6.fetchTransactions(1, JSON.stringify(_this6.appliedFilters));
+
+              case 4:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
       }))();
+    },
+    upperCaseFirstVal: function upperCaseFirstVal(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
     }
   })
 });
@@ -23360,12 +23415,11 @@ var render = function() {
             "bg-white rounded-lg pt-5 shadow-xl transform transition-all max-w-2xl"
         },
         [
-          _vm._v("\n    " + _vm._s(_vm.search) + "\n    "),
           _vm._l(_vm.search, function(_, searchIndex) {
             return [
               _c(
                 "div",
-                { key: _vm.index, staticClass: "flex items-center px-6" },
+                { key: searchIndex, staticClass: "flex items-center px-6" },
                 [
                   _c("div", { staticClass: "relative mb-4" }, [
                     _c("label", { staticClass: "block" }, [
@@ -23447,9 +23501,36 @@ var render = function() {
                           _c(
                             "select",
                             {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.search[searchIndex].operator,
+                                  expression: "search[searchIndex].operator"
+                                }
+                              ],
                               staticClass:
                                 "block w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-gray-500 focus:bg-white focus:ring-0 focus:outline-none",
-                              on: { change: _vm.transformOperator }
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.search[searchIndex],
+                                    "operator",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
                             },
                             [
                               _c("option", { attrs: { value: "equals" } }, [
@@ -23597,11 +23678,88 @@ var render = function() {
                             1
                           )
                         ])
-                      ])
+                      ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex items-center mt-2 ml-2" }, [
+                    searchIndex !== 0
+                      ? _c("div", [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "mt-2 hover:bg-gray-200 rounded-full cursor-pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.removeFilter(searchIndex)
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "svg",
+                                {
+                                  staticClass: "w-5 h-5",
+                                  attrs: {
+                                    fill: "none",
+                                    stroke: "currentColor",
+                                    viewBox: "0 0 24 24",
+                                    xmlns: "http://www.w3.org/2000/svg"
+                                  }
+                                },
+                                [
+                                  _c("path", {
+                                    attrs: {
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round",
+                                      "stroke-width": "2",
+                                      d: "M6 18L18 6M6 6l12 12"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ])
+                      : _vm._e()
+                  ])
                 ]
               )
             ]
           }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "flex items-center mx-2 px-4 py-2 bg-gray-200 text-gray-700 shadow-md rounded-lg mt-2 hover:bg-gray-300 hover:text-gray-900 rounded-full focus:outline-none cursor-pointer",
+              on: { click: _vm.createNewFilter }
+            },
+            [
+              _c(
+                "svg",
+                {
+                  staticClass: "w-6 h-6 text-green-800",
+                  attrs: {
+                    fill: "none",
+                    stroke: "currentColor",
+                    viewBox: "0 0 24 24",
+                    xmlns: "http://www.w3.org/2000/svg"
+                  }
+                },
+                [
+                  _c("path", {
+                    attrs: {
+                      "stroke-linecap": "round",
+                      "stroke-linejoin": "round",
+                      "stroke-width": "2",
+                      d: "M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    }
+                  })
+                ]
+              ),
+              _vm._v("\n        Add Filter\n      ")
+            ]
+          ),
           _vm._v(" "),
           _c(
             "div",
@@ -25014,113 +25172,138 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "flex items-center mt-4" }, [
-      _c("div", { staticClass: "flex flex-1 items-center pr-4" }, [
-        _c("div", { staticClass: "relative md:w-1/3" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.searchQuery,
-                expression: "searchQuery"
-              }
-            ],
-            staticClass:
-              "w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium",
-            attrs: { type: "search", placeholder: "Search..." },
-            domProps: { value: _vm.searchQuery },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.searchQuery = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "absolute top-0 left-0 inline-flex items-center p-2"
-            },
-            [
-              _c(
-                "svg",
+      _c(
+        "div",
+        { staticClass: "flex flex-1 items-center pr-4" },
+        [
+          _c("div", { staticClass: "relative md:w-1/3" }, [
+            _c("input", {
+              directives: [
                 {
-                  staticClass: "w-6 h-6 text-gray-400",
-                  attrs: {
-                    xmlns: "http://www.w3.org/2000/svg",
-                    viewBox: "0 0 24 24",
-                    "stroke-width": "2",
-                    stroke: "currentColor",
-                    fill: "none",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round"
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.searchQuery,
+                  expression: "searchQuery"
+                }
+              ],
+              staticClass:
+                "w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium",
+              attrs: { type: "search", placeholder: "Search..." },
+              domProps: { value: _vm.searchQuery },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                },
-                [
-                  _c("rect", {
-                    attrs: {
-                      x: "0",
-                      y: "0",
-                      width: "24",
-                      height: "24",
-                      stroke: "none"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("circle", { attrs: { cx: "10", cy: "10", r: "7" } }),
-                  _vm._v(" "),
-                  _c("line", {
-                    attrs: { x1: "21", y1: "21", x2: "15", y2: "15" }
-                  })
-                ]
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _vm.appliedFilters
-          ? _c(
+                  _vm.searchQuery = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
               "div",
               {
+                staticClass:
+                  "absolute top-0 left-0 inline-flex items-center p-2"
+              },
+              [
+                _c(
+                  "svg",
+                  {
+                    staticClass: "w-6 h-6 text-gray-400",
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      viewBox: "0 0 24 24",
+                      "stroke-width": "2",
+                      stroke: "currentColor",
+                      fill: "none",
+                      "stroke-linecap": "round",
+                      "stroke-linejoin": "round"
+                    }
+                  },
+                  [
+                    _c("rect", {
+                      attrs: {
+                        x: "0",
+                        y: "0",
+                        width: "24",
+                        height: "24",
+                        stroke: "none"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("circle", { attrs: { cx: "10", cy: "10", r: "7" } }),
+                    _vm._v(" "),
+                    _c("line", {
+                      attrs: { x1: "21", y1: "21", x2: "15", y2: "15" }
+                    })
+                  ]
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.appliedFilters, function(filter, index) {
+            return _c(
+              "div",
+              {
+                key: index,
                 staticClass:
                   "flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer"
               },
               [
-                _c("button", { on: { click: _vm.resetFilters } }, [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "w-4 h-4 bg-gray-300 rounded-lg",
-                      attrs: {
-                        fill: "none",
-                        stroke: "currentColor",
-                        viewBox: "0 0 24 24",
-                        xmlns: "http://www.w3.org/2000/svg"
+                _c(
+                  "button",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.removeFilter(index)
                       }
-                    },
-                    [
-                      _c("path", {
+                    }
+                  },
+                  [
+                    _c(
+                      "svg",
+                      {
+                        staticClass: "w-4 h-4 bg-gray-300 rounded-lg",
                         attrs: {
-                          "stroke-linecap": "round",
-                          "stroke-linejoin": "round",
-                          "stroke-width": "2",
-                          d: "M6 18L18 6M6 6l12 12"
+                          fill: "none",
+                          stroke: "currentColor",
+                          viewBox: "0 0 24 24",
+                          xmlns: "http://www.w3.org/2000/svg"
                         }
-                      })
-                    ]
-                  )
-                ]),
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "M6 18L18 6M6 6l12 12"
+                          }
+                        })
+                      ]
+                    )
+                  ]
+                ),
                 _vm._v(" "),
                 _c("span", { staticClass: "ml-1 font-semibold" }, [
-                  _vm._v(_vm._s(_vm.appliedFilters))
+                  _vm._v(
+                    _vm._s(
+                      _vm.upperCaseFirstVal(filter.column) +
+                        " " +
+                        filter.operatorVal +
+                        " " +
+                        filter.value
+                    )
+                  )
                 ])
               ]
             )
-          : _vm._e()
-      ]),
+          })
+        ],
+        2
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "flex items-center" }, [
         _vm.selected.length

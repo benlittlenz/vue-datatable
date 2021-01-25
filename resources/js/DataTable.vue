@@ -52,8 +52,8 @@
             </svg>
           </div>
         </div>
-        <div v-if="appliedFilters" class="flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer">
-          <button @click="resetFilters">
+        <div v-for="(filter, index) in appliedFilters" :key="index" class="flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer">
+          <button @click="removeFilter(index)">
             <svg
               class="w-4 h-4 bg-gray-300 rounded-lg"
               fill="none"
@@ -69,7 +69,7 @@
               ></path>
             </svg>
           </button>
-          <span class="ml-1 font-semibold">{{ appliedFilters }}</span>
+          <span class="ml-1 font-semibold">{{ `${upperCaseFirstVal(filter.column)} ${filter.operatorVal} ${filter.value}` }}</span>
         </div>
       </div>
       <div class="flex items-center">
@@ -362,7 +362,7 @@ export default {
     selected: [],
     openConfirmDeleteModal: false,
     openFilterModal: false,
-    appliedFilters: "",
+    appliedFilters: null,
   }),
 
   components: {
@@ -495,19 +495,19 @@ export default {
       console.log("filters", filters);
       await this.fetchTransactions(1, JSON.stringify(filters));
       this.openFilterModal = false;
-      this.displayFilters(filters);
+      //this.displayFilters(filters);
+      this.appliedFilters = filters;
     },
 
-    displayFilters(filters) {
-      let str = "";
-      str += filters.column.charAt(0).toUpperCase() + filters.column.slice(1);
-      str += ` ${filters.operator} ${filters.value}`;
-      return (this.appliedFilters = str);
+    async removeFilter(index) {
+      console.log('INDEX', index);
+      this.appliedFilters.splice(index, 1)
+      await this.fetchTransactions(1, JSON.stringify(this.appliedFilters));
+      //this.appliedFilters = {}
     },
 
-    async resetFilters() {
-      await this.fetchTransactions(1, '');
-      this.appliedFilters = ''
+    upperCaseFirstVal(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
     }
   },
 };
