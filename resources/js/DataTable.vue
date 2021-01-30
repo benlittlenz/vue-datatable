@@ -52,7 +52,11 @@
             </svg>
           </div>
         </div>
-        <div v-for="(filter, index) in appliedFilters" :key="index" class="flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer">
+        <div
+          v-for="(filter, index) in appliedFilters"
+          :key="index"
+          class="flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer"
+        >
           <button @click="removeFilter(index)">
             <svg
               class="w-4 h-4 bg-gray-300 rounded-lg"
@@ -69,7 +73,11 @@
               ></path>
             </svg>
           </button>
-          <span class="ml-1 font-semibold">{{ `${upperCaseFirstVal(filter.column)} ${filter.operatorVal} ${filter.value}` }}</span>
+          <span class="ml-1 font-semibold">{{
+            `${upperCaseFirstVal(filter.column)} ${filter.operatorVal} ${
+              filter.value
+            }`
+          }}</span>
         </div>
       </div>
       <div class="flex items-center">
@@ -141,174 +149,176 @@
         </div>
       </div>
     </div>
-    <div class="bg-white rounded-sm shadow overflow-y-auto relative mt-2">
-      <div v-if="loading">Loading...</div>
-      <div v-else>
-        <table
-          class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
-        >
-          <thead>
-            <tr class="text-left h-6">
-              <th
-                class="w-8 py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100"
-              >
-                <label
-                  class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+    <div>
+      <div >
+        <div v-if="loading">Loading...</div>
+        <div v-else class="bg-white rounded-sm shadow mt-2 overflow-auto max-h-screen">
+          <table class="border-collapse w-full whitespace-no-wrap bg-white">
+            <thead>
+              <tr class="text-left h-6">
+                <th
+                  class="w-8 py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100"
                 >
-                  <input
-                    type="checkbox"
-                    class="form-checkbox focus:outline-none focus:shadow-outline"
-                    @change="selectAllCheckboxes"
-                    :checked="checked"
-                  />
-                </label>
-              </th>
-              <th
-                v-for="(column, index) in columns"
-                :key="index"
-                class="w-40 bg-gray-100 sticky top-0 border-solid border border-gray-200 cursor-pointer px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs"
-                @click="sortColumn(column)"
-              >
-                <template v-if="sort.column === column">
-                  <div
-                    class="flex items-center"
-                    v-if="sort.direction === 'asc'"
-                  >
-                    <span class="mr-2">{{ column }}</span>
-                    <span>
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 15l7-7 7 7"
-                        ></path>
-                      </svg>
-                    </span>
-                  </div>
-                  <div
-                    class="flex items-center"
-                    v-if="sort.direction === 'desc'"
-                  >
-                    <span class="mr-2">{{ column }}</span>
-                    <span>
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 9l-7 7-7-7"
-                        ></path>
-                      </svg>
-                    </span>
-                  </div>
-                </template>
-
-                <template v-else
-                  ><span>{{ column }}</span></template
-                >
-              </th>
-              <th
-                class="w-4 bg-gray-100 sticky top-0 border-solid border border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs"
-              ></th>
-            </tr>
-          </thead>
-          <tbody>
-            <template>
-              <tr
-                v-for="transaction in transactionList"
-                :key="transaction.id"
-                class="max-h-2 hover:bg-gray-50 cursor-pointer"
-              >
-                <td class="border-dashed border-t border-gray-200 px-3">
                   <label
                     class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
                   >
                     <input
-                      v-model="selected"
-                      :value="transaction.id"
                       type="checkbox"
-                      class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
+                      class="form-checkbox focus:outline-none focus:shadow-outline"
+                      @change="selectAllCheckboxes"
+                      :checked="checked"
                     />
                   </label>
-                </td>
-                <td class="border-solid border border-gray-200">
-                  <span class="text-gray-700 px-6 py-1 flex items-center">{{
-                    transaction.date
-                  }}</span>
-                </td>
-                <td class="border-solid border border-gray-200">
-                  <span class="text-gray-700 px-6 py-1 flex items-center">{{
-                    transaction.category
-                  }}</span>
-                </td>
-                <td class="border-solid border border-gray-200">
-                  <span class="text-gray-700 px-6 py-1 flex items-center">{{
-                    transaction.payee
-                  }}</span>
-                </td>
-                <td class="border-solid border border-gray-200">
-                  <span class="text-gray-700 px-6 py-1 flex items-center"
-                    >${{ transaction.amount }}</span
-                  >
-                </td>
-                <td class="border-solid border border-gray-200">
-                  <span class="text-gray-700 px-6 py-1 flex items-center">{{
-                    transaction.account
-                  }}</span>
-                </td>
-                <td class="border-solid border border-gray-200">
-                  <span class="text-gray-700 px-6 py-1 flex items-center">{{
-                    transaction.notes
-                  }}</span>
-                </td>
-                <td
-                  v-on:click="updateTransaction(transaction)"
-                  class="border-solid border border-gray-200"
+                </th>
+                <th
+                  v-for="(column, index) in columns"
+                  :key="index"
+                  class="w-40 bg-gray-100 sticky top-0 border-solid border border-gray-200 cursor-pointer px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs"
+                  @click="sortColumn(column)"
                 >
-                  <div class="flex flex-col justify-center items-center">
-                    <span class="">
-                      <svg
-                        class="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        ></path>
-                      </svg>
-                    </span>
-                  </div>
-                </td>
+                  <template v-if="sort.column === column">
+                    <div
+                      class="flex items-center"
+                      v-if="sort.direction === 'asc'"
+                    >
+                      <span class="mr-2">{{ column }}</span>
+                      <span>
+                        <svg
+                          class="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 15l7-7 7 7"
+                          ></path>
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="flex items-center"
+                      v-if="sort.direction === 'desc'"
+                    >
+                      <span class="mr-2">{{ column }}</span>
+                      <span>
+                        <svg
+                          class="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </template>
+
+                  <template v-else
+                    ><span>{{ column }}</span></template
+                  >
+                </th>
+                <th
+                  class="w-4 bg-gray-100 sticky top-0 border-solid border border-gray-200 px-6 py-3 text-gray-600 font-bold tracking-wider uppercase text-xs"
+                ></th>
               </tr>
-            </template>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <template>
+                <tr
+                  v-for="transaction in transactionList"
+                  :key="transaction.id"
+                  class="max-h-2 hover:bg-gray-50 cursor-pointer"
+                >
+                  <td class="border-dashed border-t border-gray-200 px-3">
+                    <label
+                      class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+                    >
+                      <input
+                        v-model="selected"
+                        :value="transaction.id"
+                        type="checkbox"
+                        class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
+                      />
+                    </label>
+                  </td>
+                  <td class="border-solid border border-gray-200">
+                    <span class="text-gray-700 px-6 py-1 flex items-center">{{
+                      transaction.date
+                    }}</span>
+                  </td>
+                  <td class="border-solid border border-gray-200">
+                    <span class="text-gray-700 px-6 py-1 flex items-center">{{
+                      transaction.category
+                    }}</span>
+                  </td>
+                  <td class="border-solid border border-gray-200">
+                    <span class="text-gray-700 px-6 py-1 flex items-center">{{
+                      transaction.payee
+                    }}</span>
+                  </td>
+                  <td class="border-solid border border-gray-200">
+                    <span class="text-gray-700 px-6 py-1 flex items-center"
+                      >${{ transaction.amount }}</span
+                    >
+                  </td>
+                  <td class="border-solid border border-gray-200">
+                    <span class="text-gray-700 px-6 py-1 flex items-center">{{
+                      transaction.account
+                    }}</span>
+                  </td>
+                  <td class="border-solid border border-gray-200">
+                    <span class="text-gray-700 px-6 py-1 flex items-center">{{
+                      transaction.notes
+                    }}</span>
+                  </td>
+                  <td
+                    v-on:click="updateTransaction(transaction)"
+                    class="border-solid border border-gray-200"
+                  >
+                    <div class="flex flex-col justify-center items-center">
+                      <span class="">
+                        <svg
+                          class="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5l7 7-7 7"
+                          ></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex justify-end">
+          <Pagination
+            :meta="this.transactions.meta"
+            v-on:page-change="fetchTransactions"
+          />
+        </div>
       </div>
     </div>
-    <div class="absolute right-0 mr-20">
-      <Pagination
-        :meta="this.transactions.meta"
-        v-on:page-change="fetchTransactions"
-      />
-    </div>
+
+
 
     <div v-if="openCreateTransactionModal === true">
       <createTransactionModal v-on:close-modal="closeModal" />
@@ -500,15 +510,15 @@ export default {
     },
 
     async removeFilter(index) {
-      console.log('INDEX', index);
-      this.appliedFilters.splice(index, 1)
+      console.log("INDEX", index);
+      this.appliedFilters.splice(index, 1);
       await this.fetchTransactions(1, JSON.stringify(this.appliedFilters));
       //this.appliedFilters = {}
     },
 
     upperCaseFirstVal(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    }
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    },
   },
 };
 </script>

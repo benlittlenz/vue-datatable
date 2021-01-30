@@ -17,17 +17,20 @@ class TransactionController extends Controller
         $pageLimit = $request->limit;
         //dd($filters);
 
-        $query = Transaction::query();
+        if($filters) {
+            $query = Transaction::query();
 
-        foreach ($filters as $filter) {
-            if ($filter->column == 'date') {
-                $query->whereBetween('date', [Carbon::parse($filter->fromDate)->format('Y-m-d'), Carbon::parse($filter->toDate)->format('Y-m-d')]);
-            } else {
-                $query->where($filter->column, $filter->operator ?? '=', $filter->value);
+            foreach ($filters as $filter) {
+                if ($filter->column == 'date') {
+                    $query->whereBetween('date', [Carbon::parse($filter->fromDate)->format('Y-m-d'), Carbon::parse($filter->toDate)->format('Y-m-d')]);
+                } else {
+                    $query->where($filter->column, $filter->operator ?? '=', $filter->value);
+                }
             }
+
+            return TransactionResource::collection($query->paginate($pageLimit));
         }
 
-        return TransactionResource::collection($query->paginate($pageLimit));
         // if ($filters) {
         // return TransactionResource::collection(
         //     Transaction::query()
