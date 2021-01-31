@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-if="meta.length === 0">Loading..</div>
-    <div v-else class="flex items-center py-4 w-64">
+    <div v-else class="flex items-center">
       <div class="flex items-center">
         <a
           @click.prevent="changePage(meta.current_page - 1)"
           href="#"
-          class="mr-2 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150"
+          class="mr-2 py-2 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150"
           :class="
             meta.current_page === 1
               ? 'cursor-not-allowed'
@@ -14,7 +14,7 @@
           "
         >
           <svg
-            class="mr-3 h-5 w-5 text-gray-400"
+            class="mr-1 h-5 w-5 text-gray-400"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -36,8 +36,9 @@
           >
             1
           </a>
-                    <a
-            class="px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-not-allowed"
+          <a
+            @click.prevent="navigateSection('next')"
+            class="px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-pointer"
           >
             ...
           </a>
@@ -54,7 +55,8 @@
         </li>
         <template v-if="currentSection < sectionCount">
           <a
-            class="px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-not-allowed"
+            @click.prevent="navigateSection('prev')"
+            class="px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-pointer"
           >
             ...
           </a>
@@ -71,7 +73,7 @@
         <a
           @click.prevent="changePage(meta.current_page + 1)"
           href="#"
-          class="ml-2 px-2 py-1 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none"
+          class="ml-2 py-1 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none"
           :class="
             meta.current_page === meta.last_page
               ? 'cursor-not-allowed'
@@ -80,7 +82,7 @@
         >
           Next
           <svg
-            class="ml-3 h-5 w-5 text-gray-400"
+            class="ml-1 h-5 w-5 text-gray-400"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -139,7 +141,6 @@ export default {
 
       const currentPage = (this.currentSection - 1) * this.pagesPerSection + 1;
 
-      //return Array(this.getLastPage + 1).fill(currentPage).map((x, y) => x + y)
       return this.calcPageRange(currentPage, this.getLastPage + 1);
     },
   },
@@ -154,7 +155,15 @@ export default {
     },
 
     calcPageRange(start, end) {
-      return new Array(end - start).fill().map((d, i) => i + start);
+      return new Array(end - start).fill().map((_, index) => index + start);
+    },
+
+    navigateSection(direction) {
+      const value = direction === "next" ? -1 : +1;
+      const section = this.currentSection + value;
+      const firstPageOfSection = (section - 1) * this.pagesPerSection + 1;
+
+      this.changePage(firstPageOfSection);
     },
   },
 };

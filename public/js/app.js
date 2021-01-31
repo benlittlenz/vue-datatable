@@ -2261,6 +2261,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2293,8 +2295,7 @@ __webpack_require__.r(__webpack_exports__);
     pages: function pages() {
       // CurrentSection  = current_page / pagesPerSection
       // CurrentSection - 1 (if page = 1, 1 / 4 = 1 - 1 = 0) * pagesPerSection + 1
-      var currentPage = (this.currentSection - 1) * this.pagesPerSection + 1; //return Array(this.getLastPage + 1).fill(currentPage).map((x, y) => x + y)
-
+      var currentPage = (this.currentSection - 1) * this.pagesPerSection + 1;
       return this.calcPageRange(currentPage, this.getLastPage + 1);
     }
   },
@@ -2308,9 +2309,15 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("page-change", page);
     },
     calcPageRange: function calcPageRange(start, end) {
-      return new Array(end - start).fill().map(function (d, i) {
-        return i + start;
+      return new Array(end - start).fill().map(function (_, index) {
+        return index + start;
       });
+    },
+    navigateSection: function navigateSection(direction) {
+      var value = direction === "next" ? -1 : +1;
+      var section = this.currentSection + value;
+      var firstPageOfSection = (section - 1) * this.pagesPerSection + 1;
+      this.changePage(firstPageOfSection);
     }
   }
 });
@@ -24051,13 +24058,13 @@ var render = function() {
   return _c("div", [
     _vm.meta.length === 0
       ? _c("div", [_vm._v("Loading..")])
-      : _c("div", { staticClass: "flex items-center py-4 w-64" }, [
+      : _c("div", { staticClass: "flex items-center" }, [
           _c("div", { staticClass: "flex items-center" }, [
             _c(
               "a",
               {
                 staticClass:
-                  "mr-2 px-2 py-2 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150",
+                  "mr-2 py-2 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none transition ease-in-out duration-150",
                 class:
                   _vm.meta.current_page === 1
                     ? "cursor-not-allowed"
@@ -24074,7 +24081,7 @@ var render = function() {
                 _c(
                   "svg",
                   {
-                    staticClass: "mr-3 h-5 w-5 text-gray-400",
+                    staticClass: "mr-1 h-5 w-5 text-gray-400",
                     attrs: { fill: "currentColor", viewBox: "0 0 20 20" }
                   },
                   [
@@ -24119,7 +24126,13 @@ var render = function() {
                       "a",
                       {
                         staticClass:
-                          "px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-not-allowed"
+                          "px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-pointer",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.navigateSection("next")
+                          }
+                        }
                       },
                       [_vm._v("\n          ...\n        ")]
                     )
@@ -24156,7 +24169,13 @@ var render = function() {
                       "a",
                       {
                         staticClass:
-                          "px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-not-allowed"
+                          "px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-pointer",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.navigateSection("prev")
+                          }
+                        }
                       },
                       [_vm._v("\n          ...\n        ")]
                     ),
@@ -24193,7 +24212,7 @@ var render = function() {
               "a",
               {
                 staticClass:
-                  "ml-2 px-2 py-1 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none",
+                  "ml-2 py-1 inline-flex items-center text-sm leading-5 font-medium rounded-lg text-gray-500 focus:outline-none",
                 class:
                   _vm.meta.current_page === _vm.meta.last_page
                     ? "cursor-not-allowed"
@@ -24211,7 +24230,7 @@ var render = function() {
                 _c(
                   "svg",
                   {
-                    staticClass: "ml-3 h-5 w-5 text-gray-400",
+                    staticClass: "ml-1 h-5 w-5 text-gray-400",
                     attrs: { fill: "currentColor", viewBox: "0 0 20 20" }
                   },
                   [
