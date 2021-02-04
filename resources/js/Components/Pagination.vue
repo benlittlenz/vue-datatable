@@ -37,7 +37,7 @@
             1
           </a>
           <a
-            @click.prevent="navigateSection('next')"
+            @click.prevent="navigateSection('prev')"
             class="px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-pointer"
           >
             ...
@@ -53,9 +53,9 @@
             {{ page }}
           </a>
         </li>
-        <template v-if="currentSection < sectionCount">
+        <template v-if="currentSection < numberOfSections">
           <a
-            @click.prevent="navigateSection('prev')"
+            @click.prevent="navigateSection('next')"
             class="px-2 py-1 text-center inline-flex items-center text-sm leading-5 font-medium rounded-lg focus:outline-none cursor-pointer"
           >
             ...
@@ -96,14 +96,13 @@
       </div>
     </div>
     <p>currentSection {{ currentSection }}</p>
-    <p>current: {{ sectionCount }}</p>
+    <p>current: {{ numberOfSections }}</p>
     <p>getLastPage: {{ getLastPage }}</p>
   </div>
 </template>
 <script>
 export default {
   data: () => ({
-    meta_data: null,
     pagesPerSection: 4,
   }),
 
@@ -116,31 +115,25 @@ export default {
       return Math.ceil(this.meta.current_page / this.pagesPerSection);
     },
 
-    sectionCount() {
+    numberOfSections() {
       // Divide # of pages by number of sections
       //Grab the last page and divide by # per section and round up
       return Math.ceil(this.meta.last_page / this.pagesPerSection);
     },
 
     getLastPage() {
-      let lastPage =
-        (this.currentSection - 1) * this.sectionCount + this.pagesPerSection;
-
       // Check if current section is equal to total count of sections
       // Set the last page from our meta data to the lastPage
-      if (this.currentSection === this.sectionCount) {
-        lastPage = this.meta.last_page;
+      if (this.currentSection === this.numberOfSections) {
+        return this.meta.last_page;
       }
 
-      return lastPage;
+      return (this.currentSection - 1) * this.numberOfSections + this.pagesPerSection;
     },
 
     pages() {
-      // CurrentSection  = current_page / pagesPerSection
-      // CurrentSection - 1 (if page = 1, 1 / 4 = 1 - 1 = 0) * pagesPerSection + 1
-
       const currentPage = (this.currentSection - 1) * this.pagesPerSection + 1;
-
+      console.log('CURRENT SECTION: ', this.currentSection);
       return this.calcPageRange(currentPage, this.getLastPage + 1);
     },
   },
@@ -159,8 +152,9 @@ export default {
     },
 
     navigateSection(direction) {
-      const value = direction === "next" ? -1 : +1;
+      const value = direction === "next" ? +1 : -1;
       const section = this.currentSection + value;
+      console.log('SECTION: ', section);
       const firstPageOfSection = (section - 1) * this.pagesPerSection + 1;
 
       this.changePage(firstPageOfSection);

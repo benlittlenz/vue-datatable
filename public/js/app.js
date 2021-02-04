@@ -2266,7 +2266,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      meta_data: null,
       pagesPerSection: 4
     };
   },
@@ -2277,25 +2276,23 @@ __webpack_require__.r(__webpack_exports__);
       // If we're on page
       return Math.ceil(this.meta.current_page / this.pagesPerSection);
     },
-    sectionCount: function sectionCount() {
+    numberOfSections: function numberOfSections() {
       // Divide # of pages by number of sections
       //Grab the last page and divide by # per section and round up
       return Math.ceil(this.meta.last_page / this.pagesPerSection);
     },
     getLastPage: function getLastPage() {
-      var lastPage = (this.currentSection - 1) * this.sectionCount + this.pagesPerSection; // Check if current section is equal to total count of sections
+      // Check if current section is equal to total count of sections
       // Set the last page from our meta data to the lastPage
-
-      if (this.currentSection === this.sectionCount) {
-        lastPage = this.meta.last_page;
+      if (this.currentSection === this.numberOfSections) {
+        return this.meta.last_page;
       }
 
-      return lastPage;
+      return (this.currentSection - 1) * this.numberOfSections + this.pagesPerSection;
     },
     pages: function pages() {
-      // CurrentSection  = current_page / pagesPerSection
-      // CurrentSection - 1 (if page = 1, 1 / 4 = 1 - 1 = 0) * pagesPerSection + 1
       var currentPage = (this.currentSection - 1) * this.pagesPerSection + 1;
+      console.log('CURRENT SECTION: ', this.currentSection);
       return this.calcPageRange(currentPage, this.getLastPage + 1);
     }
   },
@@ -2314,8 +2311,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     navigateSection: function navigateSection(direction) {
-      var value = direction === "next" ? -1 : +1;
+      var value = direction === "next" ? +1 : -1;
       var section = this.currentSection + value;
+      console.log('SECTION: ', section);
       var firstPageOfSection = (section - 1) * this.pagesPerSection + 1;
       this.changePage(firstPageOfSection);
     }
@@ -2928,6 +2926,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_AdvancedSearch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/AdvancedSearch */ "./resources/js/Components/AdvancedSearch.vue");
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -2938,7 +2938,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -3334,10 +3333,10 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       }
     });
   },
-  computed: Object.assign({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)({
     transactions: "transactions/transactions"
-  }), {
-    transactionList: function transactionList() {
+  })), {}, {
+    transactionList: function transactions() {
       var _this2 = this;
 
       if (this.searchQuery) {
@@ -3352,23 +3351,57 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
         //return this.transactions.data
         var column = this.sort.column;
         var direction = this.sort.direction;
-        return _.orderBy(this.transactions.data.slice(), function (transaction) {
-          return String(transaction[column]).toLowerCase();
-        }, direction);
+        return this.sortArray(this.transactions.data.slice(), column, direction);
       } else {
         return [];
       }
-    },
-    checked: function checked() {
-      if (this.transactionList.length === this.selected.length) {
-        console.log("it does");
-      } else {
-        console.log("it doesnt");
-      }
-
-      return this.transactionList.length === this.selected.length ? true : false;
     }
   }),
+  // computed: Object.assign(
+  //   {},
+  //   mapGetters({
+  //     transactions: "transactions/transactions",
+  //   }),
+  //   {
+  //     transactionList() {
+  //       if (this.searchQuery) {
+  //         return this.transactions.data.filter((transaction) => {
+  //           return Object.keys(transaction).some((key) => {
+  //             return (
+  //               String(transaction[key])
+  //                 .toLowerCase()
+  //                 .indexOf(this.searchQuery.toLowerCase()) > -1
+  //             );
+  //           });
+  //         });
+  //       }
+  //       if (this.transactions.data) {
+  //         //return this.transactions.data
+  //         const column = this.sort.column;
+  //         const direction = this.sort.direction;
+  //         return _.orderBy(
+  //           this.transactions.data.slice(),
+  //           (transaction) => {
+  //             return String(transaction[column]).toLowerCase();
+  //           },
+  //           direction
+  //         );
+  //       } else {
+  //         return [];
+  //       }
+  //     },
+  //     checked() {
+  //       if (this.transactionList.length === this.selected.length) {
+  //         console.log("it does");
+  //       } else {
+  //         console.log("it doesnt");
+  //       }
+  //       return this.transactionList.length === this.selected.length
+  //         ? true
+  //         : false;
+  //     },
+  //   }
+  // ),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapActions)({
     deleteTransactions: "transactions/deleteTransactions"
   })), {}, {
@@ -3410,6 +3443,22 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       this.sort.direction = this.sort.direction === "asc" ? "desc" : "asc";
       console.log("hu", this.transactions);
       console.log(this.sort);
+    },
+    sortArray: function sortArray(array, column, direction) {
+      if (column === "amount") {
+        return array.sort(function (a, b) {
+          console.log("type ", _typeof(a[column]));
+          return direction === "asc" ? a[column] - b[column] : b[column] - a[column];
+        });
+      } else if (column === 'date') {
+        return array.sort(function (a, b) {
+          return direction === 'asc' ? new Date(a[column]) - new Date(b[column]) : new Date(b[column]) - new Date(a[column]);
+        });
+      } else {
+        return array.sort(function (a, b) {
+          return direction === 'asc' ? a[column].localeCompare(b[column]) : b[column].localeCompare(a[column]);
+        });
+      }
     },
     closeModal: function closeModal() {
       this.openCreateTransactionModal = false;
@@ -24130,7 +24179,7 @@ var render = function() {
                         on: {
                           click: function($event) {
                             $event.preventDefault()
-                            return _vm.navigateSection("next")
+                            return _vm.navigateSection("prev")
                           }
                         }
                       },
@@ -24163,7 +24212,7 @@ var render = function() {
                 ])
               }),
               _vm._v(" "),
-              _vm.currentSection < _vm.sectionCount
+              _vm.currentSection < _vm.numberOfSections
                 ? [
                     _c(
                       "a",
@@ -24173,7 +24222,7 @@ var render = function() {
                         on: {
                           click: function($event) {
                             $event.preventDefault()
-                            return _vm.navigateSection("prev")
+                            return _vm.navigateSection("next")
                           }
                         }
                       },
@@ -24251,7 +24300,7 @@ var render = function() {
     _vm._v(" "),
     _c("p", [_vm._v("currentSection " + _vm._s(_vm.currentSection))]),
     _vm._v(" "),
-    _c("p", [_vm._v("current: " + _vm._s(_vm.sectionCount))]),
+    _c("p", [_vm._v("current: " + _vm._s(_vm.numberOfSections))]),
     _vm._v(" "),
     _c("p", [_vm._v("getLastPage: " + _vm._s(_vm.getLastPage))])
   ])
@@ -25323,10 +25372,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "mx-auto mt-20 w-11/12" }, [
     _vm._v(
-      "\n  " + _vm._s(_vm.selected) + "\n  checked " + _vm._s(_vm.checked) + " "
+      "\n  " +
+        _vm._s(_vm.selected) +
+        "\n\n  " +
+        _vm._s(_vm.openEditTransactionModal) +
+        "\n  "
     ),
-    _c("br"),
-    _vm._v("\n\n  " + _vm._s(_vm.openEditTransactionModal) + "\n  "),
     _c("div", { staticClass: "rounded-lg" }, [
       _c(
         "button",
@@ -25701,7 +25752,6 @@ var render = function() {
                                     staticClass:
                                       "form-checkbox focus:outline-none focus:shadow-outline",
                                     attrs: { type: "checkbox" },
-                                    domProps: { checked: _vm.checked },
                                     on: { change: _vm.selectAllCheckboxes }
                                   })
                                 ]

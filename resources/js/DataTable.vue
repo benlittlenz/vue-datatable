@@ -1,7 +1,6 @@
 <template>
   <div class="mx-auto mt-20 w-11/12">
     {{ selected }}
-    checked {{ checked }} <br />
 
     {{ openEditTransactionModal }}
     <div class="rounded-lg">
@@ -150,9 +149,12 @@
       </div>
     </div>
     <div>
-      <div >
+      <div>
         <div v-if="loading">Loading...</div>
-        <div v-else class="bg-white rounded-sm shadow mt-2 overflow-auto max-h-screen">
+        <div
+          v-else
+          class="bg-white rounded-sm shadow mt-2 overflow-auto max-h-screen"
+        >
           <table class="border-collapse w-full whitespace-no-wrap bg-white">
             <thead>
               <tr class="text-left h-6">
@@ -166,7 +168,6 @@
                       type="checkbox"
                       class="form-checkbox focus:outline-none focus:shadow-outline"
                       @change="selectAllCheckboxes"
-                      :checked="checked"
                     />
                   </label>
                 </th>
@@ -318,8 +319,6 @@
       </div>
     </div>
 
-
-
     <div v-if="openCreateTransactionModal === true">
       <createTransactionModal v-on:close-modal="closeModal" />
     </div>
@@ -347,7 +346,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { createLogger, mapActions, mapGetters } from "vuex";
 const _ = require("lodash");
 
 import createTransactionModal from "./Components/createTransactionModal";
@@ -397,53 +396,87 @@ export default {
     );
   },
 
-  computed: Object.assign(
-    {},
-    mapGetters({
+  computed: {
+    ...mapGetters({
       transactions: "transactions/transactions",
     }),
-    {
-      transactionList() {
-        if (this.searchQuery) {
-          return this.transactions.data.filter((transaction) => {
-            return Object.keys(transaction).some((key) => {
-              return (
-                String(transaction[key])
-                  .toLowerCase()
-                  .indexOf(this.searchQuery.toLowerCase()) > -1
-              );
-            });
+
+    transactionList: function transactions() {
+      if (this.searchQuery) {
+        return this.transactions.data.filter((transaction) => {
+          return Object.keys(transaction).some((key) => {
+            return (
+              String(transaction[key])
+                .toLowerCase()
+                .indexOf(this.searchQuery.toLowerCase()) > -1
+            );
           });
-        }
+        });
+      }
 
-        if (this.transactions.data) {
-          //return this.transactions.data
-          const column = this.sort.column;
-          const direction = this.sort.direction;
-          return _.orderBy(
-            this.transactions.data.slice(),
-            (transaction) => {
-              return String(transaction[column]).toLowerCase();
-            },
-            direction
-          );
-        } else {
-          return [];
-        }
-      },
+      if (this.transactions.data) {
+        //return this.transactions.data
+        const column = this.sort.column;
+        const direction = this.sort.direction;
 
-      checked() {
-        if (this.transactionList.length === this.selected.length) {
-          console.log("it does");
-        } else {
-          console.log("it doesnt");
-        }
-        return this.transactionList.length === this.selected.length
-          ? true
-          : false;
-      },
-    }
-  ),
+        return this.sortArray(
+          this.transactions.data.slice(),
+          column,
+          direction
+        );
+      } else {
+        return [];
+      }
+    },
+  },
+
+  // computed: Object.assign(
+  //   {},
+  //   mapGetters({
+  //     transactions: "transactions/transactions",
+  //   }),
+  //   {
+  //     transactionList() {
+  //       if (this.searchQuery) {
+  //         return this.transactions.data.filter((transaction) => {
+  //           return Object.keys(transaction).some((key) => {
+  //             return (
+  //               String(transaction[key])
+  //                 .toLowerCase()
+  //                 .indexOf(this.searchQuery.toLowerCase()) > -1
+  //             );
+  //           });
+  //         });
+  //       }
+
+  //       if (this.transactions.data) {
+  //         //return this.transactions.data
+  //         const column = this.sort.column;
+  //         const direction = this.sort.direction;
+  //         return _.orderBy(
+  //           this.transactions.data.slice(),
+  //           (transaction) => {
+  //             return String(transaction[column]).toLowerCase();
+  //           },
+  //           direction
+  //         );
+  //       } else {
+  //         return [];
+  //       }
+  //     },
+
+  //     checked() {
+  //       if (this.transactionList.length === this.selected.length) {
+  //         console.log("it does");
+  //       } else {
+  //         console.log("it doesnt");
+  //       }
+  //       return this.transactionList.length === this.selected.length
+  //         ? true
+  //         : false;
+  //     },
+  //   }
+  // ),
 
   methods: {
     ...mapActions({
@@ -466,6 +499,30 @@ export default {
       this.sort.direction = this.sort.direction === "asc" ? "desc" : "asc";
       console.log("hu", this.transactions);
       console.log(this.sort);
+    },
+
+    sortArray(array, column, direction) {
+      if (column === "amount") {
+        return array.sort((a, b) => {
+          console.log("type ", typeof a[column]);
+          return direction === "asc"
+            ? a[column] - b[column]
+            : b[column] - a[column];
+        });
+      }
+      else if(column === 'date') {
+        return array.sort((a, b) => {
+          return direction === 'asc'
+            ? new Date(a[column]) - new Date(b[column])
+            : new Date(b[column]) - new Date(a[column])
+        })
+      } else {
+        return array.sort((a, b) => {
+          return direction === 'asc'
+            ? a[column].localeCompare(b[column])
+            : b[column].localeCompare(a[column])
+        })
+      }
     },
 
     closeModal() {
