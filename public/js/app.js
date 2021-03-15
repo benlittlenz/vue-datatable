@@ -2040,17 +2040,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ["columns"],
   methods: {
-    transformOperator: function transformOperator(operator) {
-      //const operator = event.target.value;
-      console.log('op', operator);
-      if (operator === "equals") return "=";else if (operator === "contains") return "LIKE";else if (operator === "does not contain") return "NOT LIKE";else return operator;
-    },
+    // transformOperator(operator) {
+    //   //const operator = event.target.value;
+    //   console.log('op', operator);
+    //   if (operator === "equals") return "=";
+    //   else if (operator === "contains") return "LIKE";
+    //   else if (operator === "does not contain") return "NOT LIKE";
+    //   else return operator;
+    // },
     closeModal: function closeModal() {
       this.$emit("close-modal");
     },
     applyFilters: function applyFilters() {
-      var _this = this;
-
       var filterArr = [];
       this.search.map(function (filter) {
         filterArr.push({
@@ -2058,7 +2059,7 @@ __webpack_require__.r(__webpack_exports__);
           toDate: filter.toDate ? new Date(filter.toDate).toISOString().substring(0, 10) : "",
           column: filter.column,
           operatorVal: filter.operator,
-          operator: _this.transformOperator(filter.operator),
+          operator: filter.operator,
           value: filter.value
         });
       });
@@ -3285,6 +3286,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
@@ -3341,14 +3344,14 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
       if (this.searchQuery) {
         return this.transactions.data.filter(function (transaction) {
-          return Object.keys(transaction).some(function (key) {
-            return String(transaction[key]).toLowerCase().indexOf(_this2.searchQuery.toLowerCase()) > -1;
+          return Object.values(transaction).some(function (value) {
+            console.log('value', value);
+            return String(value).toLowerCase().includes(_this2.searchQuery);
           });
         });
       }
 
       if (this.transactions.data) {
-        //return this.transactions.data
         var column = this.sort.column;
         var direction = this.sort.direction;
         return this.sortArray(this.transactions.data.slice(), column, direction);
@@ -3357,51 +3360,6 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       }
     }
   }),
-  // computed: Object.assign(
-  //   {},
-  //   mapGetters({
-  //     transactions: "transactions/transactions",
-  //   }),
-  //   {
-  //     transactionList() {
-  //       if (this.searchQuery) {
-  //         return this.transactions.data.filter((transaction) => {
-  //           return Object.keys(transaction).some((key) => {
-  //             return (
-  //               String(transaction[key])
-  //                 .toLowerCase()
-  //                 .indexOf(this.searchQuery.toLowerCase()) > -1
-  //             );
-  //           });
-  //         });
-  //       }
-  //       if (this.transactions.data) {
-  //         //return this.transactions.data
-  //         const column = this.sort.column;
-  //         const direction = this.sort.direction;
-  //         return _.orderBy(
-  //           this.transactions.data.slice(),
-  //           (transaction) => {
-  //             return String(transaction[column]).toLowerCase();
-  //           },
-  //           direction
-  //         );
-  //       } else {
-  //         return [];
-  //       }
-  //     },
-  //     checked() {
-  //       if (this.transactionList.length === this.selected.length) {
-  //         console.log("it does");
-  //       } else {
-  //         console.log("it doesnt");
-  //       }
-  //       return this.transactionList.length === this.selected.length
-  //         ? true
-  //         : false;
-  //     },
-  //   }
-  // ),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapActions)({
     deleteTransactions: "transactions/deleteTransactions"
   })), {}, {
@@ -3450,13 +3408,13 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
           console.log("type ", _typeof(a[column]));
           return direction === "asc" ? a[column] - b[column] : b[column] - a[column];
         });
-      } else if (column === 'date') {
+      } else if (column === "date") {
         return array.sort(function (a, b) {
-          return direction === 'asc' ? new Date(a[column]) - new Date(b[column]) : new Date(b[column]) - new Date(a[column]);
+          return direction === "asc" ? new Date(a[column]) - new Date(b[column]) : new Date(b[column]) - new Date(a[column]);
         });
       } else {
         return array.sort(function (a, b) {
-          return direction === 'asc' ? a[column].localeCompare(b[column]) : b[column].localeCompare(a[column]);
+          return direction === "asc" ? a[column].localeCompare(b[column]) : b[column].localeCompare(a[column]);
         });
       }
     },
@@ -3519,16 +3477,15 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                console.log("filters", filters);
-                _context3.next = 3;
+                _context3.next = 2;
                 return _this5.fetchTransactions(1, JSON.stringify(filters));
 
-              case 3:
+              case 2:
                 _this5.openFilterModal = false; //this.displayFilters(filters);
 
                 _this5.appliedFilters = filters;
 
-              case 5:
+              case 4:
               case "end":
                 return _context3.stop();
             }
@@ -23880,7 +23837,7 @@ var render = function() {
             "button",
             {
               staticClass:
-                "flex items-center mx-2 px-4 py-2 bg-gray-200 text-gray-700 shadow-md rounded-lg mt-2 hover:bg-gray-300 hover:text-gray-900 rounded-full focus:outline-none cursor-pointer",
+                "flex items-center mx-2 px-2 py-2 bg-gray-200 text-gray-700 text-sm shadow-md rounded-lg mt-2 hover:bg-gray-300 hover:text-gray-900 rounded-full focus:outline-none cursor-pointer",
               on: { click: _vm.createNewFilter }
             },
             [
@@ -25371,13 +25328,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "mx-auto mt-20 w-11/12" }, [
-    _vm._v(
-      "\n  " +
-        _vm._s(_vm.selected) +
-        "\n\n  " +
-        _vm._s(_vm.openEditTransactionModal) +
-        "\n  "
-    ),
     _c("div", { staticClass: "rounded-lg" }, [
       _c(
         "button",
@@ -25535,16 +25485,22 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("span", { staticClass: "ml-1 font-semibold" }, [
-                  _vm._v(
-                    _vm._s(
-                      _vm.upperCaseFirstVal(filter.column) +
-                        " " +
-                        filter.operatorVal +
-                        " " +
-                        filter.value
+                _c("span", { staticClass: "flex items-center ml-1" }, [
+                  _c("p", { staticClass: "font-semibold mr-1" }, [
+                    _vm._v(_vm._s(_vm.upperCaseFirstVal(filter.column)))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(
+                          filter.column !== "date"
+                            ? filter.operatorVal.concat(" ", filter.value)
+                            : filter.fromDate.concat(" ", filter.toDate)
+                        ) +
+                        "\n          "
                     )
-                  )
+                  ])
                 ])
               ]
             )

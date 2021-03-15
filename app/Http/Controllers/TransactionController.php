@@ -24,34 +24,17 @@ class TransactionController extends Controller
                 if ($filter->column == 'date') {
                     $query->whereBetween('date', [Carbon::parse($filter->fromDate)->format('Y-m-d'), Carbon::parse($filter->toDate)->format('Y-m-d')]);
                 } else {
-                    $query->where($filter->column, $filter->operator ?? '=', $filter->value);
+                    if($filter->operator === 'equals') {
+                        $query->where($filter->column, '=', $filter->value);
+                    } else if($filter->operator === 'contains') {
+                        $query->where($filter->column, 'LIKE', '%' . $filter->value . '%');
+                    } else if($filter->operator === 'does not contain') {
+                        $query->where($filter->column, 'NOT LIKE', '%' . $filter->value . '%');
+                    }
                 }
             }
-
             return TransactionResource::collection($query->paginate($pageLimit));
         }
-
-        // if ($filters) {
-        // return TransactionResource::collection(
-        //     Transaction::query()
-        //         ->when($filters->column !== 'date', function ($query) use ($filters) {
-        //             $query->where($filters->column, $filters->value);
-        //         })
-        //         ->when($filters->column === 'date', function ($query) use ($filters) {
-        //             $query->whereBetween('date', [Carbon::parse($filters->fromDate)->format('Y-m-d'), Carbon::parse($filters->toDate)->format('Y-m-d')]);
-        //         })
-        //         ->when($filters->operator === 'is not blank', function ($query) use ($filters) {
-        //             $query->whereNotNull($filters->column);
-        //         })
-        //         ->when($filters->operator === 'is blank', function ($query) use ($filters) {
-        //             $query->whereNull($filters->column);
-
-        //         })
-        //         ->paginate($pageLimit)
-        // )->response();
-
-
-        // }
         return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
     }
 

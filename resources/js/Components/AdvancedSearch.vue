@@ -118,7 +118,7 @@
         </div>
       </template>
         <button
-          class="flex items-center mx-2 px-4 py-2 bg-gray-200 text-gray-700 shadow-md rounded-lg mt-2 hover:bg-gray-300 hover:text-gray-900 rounded-full focus:outline-none cursor-pointer"
+          class="flex items-center mx-2 px-2 py-2 bg-gray-200 text-gray-700 text-sm shadow-md rounded-lg mt-2 hover:bg-gray-300 hover:text-gray-900 rounded-full focus:outline-none cursor-pointer"
           @click="createNewFilter"
         >
           <svg
@@ -183,14 +183,14 @@ export default {
   props: ["columns"],
 
   methods: {
-    transformOperator(operator) {
-      //const operator = event.target.value;
-      console.log('op', operator);
-      if (operator === "equals") return "=";
-      else if (operator === "contains") return "LIKE";
-      else if (operator === "does not contain") return "NOT LIKE";
-      else return operator;
-    },
+    // transformOperator(operator) {
+    //   //const operator = event.target.value;
+    //   console.log('op', operator);
+    //   if (operator === "equals") return "=";
+    //   else if (operator === "contains") return "LIKE";
+    //   else if (operator === "does not contain") return "NOT LIKE";
+    //   else return operator;
+    // },
     closeModal() {
       this.$emit("close-modal");
     },
@@ -206,7 +206,7 @@ export default {
             : "",
           column: filter.column,
           operatorVal: filter.operator,
-          operator: this.transformOperator(filter.operator),
+          operator: filter.operator,
           value: filter.value,
         });
       });

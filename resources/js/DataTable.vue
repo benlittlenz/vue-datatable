@@ -1,8 +1,5 @@
 <template>
   <div class="mx-auto mt-20 w-11/12">
-    {{ selected }}
-
-    {{ openEditTransactionModal }}
     <div class="rounded-lg">
       <button
         v-on:click="openCreateTransactionModal = true"
@@ -72,11 +69,16 @@
               ></path>
             </svg>
           </button>
-          <span class="ml-1 font-semibold">{{
-            `${upperCaseFirstVal(filter.column)} ${filter.operatorVal} ${
-              filter.value
-            }`
-          }}</span>
+          <span class="flex items-center ml-1">
+            <p class="font-semibold mr-1">{{ upperCaseFirstVal(filter.column) }}</p>
+            <p>
+              {{
+                filter.column !== "date"
+                  ? filter.operatorVal.concat(" ", filter.value)
+                  : filter.fromDate.concat(" ", filter.toDate)
+              }}
+            </p>
+          </span>
         </div>
       </div>
       <div class="flex items-center">
@@ -346,7 +348,7 @@
 </template>
 
 <script>
-import { createLogger, mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 const _ = require("lodash");
 
 import createTransactionModal from "./Components/createTransactionModal";
@@ -404,18 +406,18 @@ export default {
     transactionList: function transactions() {
       if (this.searchQuery) {
         return this.transactions.data.filter((transaction) => {
-          return Object.keys(transaction).some((key) => {
+          return Object.values(transaction).some((value) => {
+            console.log('value', value)
             return (
-              String(transaction[key])
+              String(value)
                 .toLowerCase()
-                .indexOf(this.searchQuery.toLowerCase()) > -1
+                .includes(this.searchQuery)
             );
           });
         });
       }
 
       if (this.transactions.data) {
-        //return this.transactions.data
         const column = this.sort.column;
         const direction = this.sort.direction;
 
@@ -429,54 +431,6 @@ export default {
       }
     },
   },
-
-  // computed: Object.assign(
-  //   {},
-  //   mapGetters({
-  //     transactions: "transactions/transactions",
-  //   }),
-  //   {
-  //     transactionList() {
-  //       if (this.searchQuery) {
-  //         return this.transactions.data.filter((transaction) => {
-  //           return Object.keys(transaction).some((key) => {
-  //             return (
-  //               String(transaction[key])
-  //                 .toLowerCase()
-  //                 .indexOf(this.searchQuery.toLowerCase()) > -1
-  //             );
-  //           });
-  //         });
-  //       }
-
-  //       if (this.transactions.data) {
-  //         //return this.transactions.data
-  //         const column = this.sort.column;
-  //         const direction = this.sort.direction;
-  //         return _.orderBy(
-  //           this.transactions.data.slice(),
-  //           (transaction) => {
-  //             return String(transaction[column]).toLowerCase();
-  //           },
-  //           direction
-  //         );
-  //       } else {
-  //         return [];
-  //       }
-  //     },
-
-  //     checked() {
-  //       if (this.transactionList.length === this.selected.length) {
-  //         console.log("it does");
-  //       } else {
-  //         console.log("it doesnt");
-  //       }
-  //       return this.transactionList.length === this.selected.length
-  //         ? true
-  //         : false;
-  //     },
-  //   }
-  // ),
 
   methods: {
     ...mapActions({
@@ -509,19 +463,18 @@ export default {
             ? a[column] - b[column]
             : b[column] - a[column];
         });
-      }
-      else if(column === 'date') {
+      } else if (column === "date") {
         return array.sort((a, b) => {
-          return direction === 'asc'
+          return direction === "asc"
             ? new Date(a[column]) - new Date(b[column])
-            : new Date(b[column]) - new Date(a[column])
-        })
+            : new Date(b[column]) - new Date(a[column]);
+        });
       } else {
         return array.sort((a, b) => {
-          return direction === 'asc'
+          return direction === "asc"
             ? a[column].localeCompare(b[column])
-            : b[column].localeCompare(a[column])
-        })
+            : b[column].localeCompare(a[column]);
+        });
       }
     },
 
@@ -559,7 +512,6 @@ export default {
     },
 
     async applyFilters(filters) {
-      console.log("filters", filters);
       await this.fetchTransactions(1, JSON.stringify(filters));
       this.openFilterModal = false;
       //this.displayFilters(filters);

@@ -12,7 +12,6 @@
               </h2>
               <div class="h-7 flex items-center">
                 <button
-                  v-on:click="closeModal"
                   aria-label="Close panel"
                   class="text-indigo-200 hover:text-white transition ease-in-out duration-150"
                 >
@@ -34,7 +33,7 @@
             </div>
           </header>
 
-          <form @submit.prevent="create">
+          <form>
             <div>
               <div>
                 <div class="mt-6 flex-1 flex flex-col justify-between bg-white">
@@ -55,7 +54,6 @@
                         </label>
                         <div class="mt-1">
                           <date-picker
-                            v-model="form.date"
                             type="date"
                             format="DD/MM/YYYY"
                           ></date-picker>
@@ -71,7 +69,6 @@
                         <div class="mt-1 rounded-md shadow-sm">
                           <input
                             placeholder="e.g. Groceries"
-                            v-model="form.category"
                             id="category"
                             type="text"
                             required
@@ -89,7 +86,6 @@
                         <div class="mt-1 rounded-md shadow-sm">
                           <input
                             placeholder="e.g. Netflix"
-                            v-model="form.payee"
                             id="payee"
                             type="text"
                             class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
@@ -106,7 +102,6 @@
                         <div class="mt-1 rounded-md shadow-sm">
                           <input
                             placeholder="$0.00"
-                            v-model="form.amount"
                             id="amount"
                             type="decimal"
                             required
@@ -124,7 +119,6 @@
                         <div class="mt-1 rounded-md shadow-sm">
                           <input
                             placeholder="e.g. Everyday Spending"
-                            v-model="form.account"
                             id="account"
                             type="text"
                             required
@@ -142,7 +136,6 @@
                         <div class="mt-1 rounded-md shadow-sm">
                           <input
                             placeholder="Optional Notes"
-                            v-model="form.notes"
                             id="notes"
                             type="text"
                             class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
@@ -158,7 +151,6 @@
                 >
                   <span class="inline-flex rounded-md shadow-sm">
                     <button
-                      v-on:click="closeModal"
                       type="button"
                       class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out"
                     >
@@ -183,54 +175,9 @@
   </section>
 </template>
 <script>
-import { mapActions } from "vuex";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
-
 export default {
-  components: {
-    DatePicker,
-  },
-  data: () => ({
-    form: {
-      date: new Date(),
-      category: "",
-      payee: "",
-      amount: "",
-      notes: "",
-      account: "",
-    }
-  }),
-
-  methods: {
-    ...mapActions({
-      createTransaction: "transactions/createTransaction",
-    }),
-    closeModal() {
-      this.$emit("close-modal");
-    },
-
-    async create() {
-      console.log(this.form);
-      try {
-        const response = await this.createTransaction({
-          data: {
-            date: this.form.date
-              ? new Date(this.form.date).toISOString().substring(0, 10)
-              : new Date().toISOString().substring(0, 10),
-            category: this.form.category,
-            payee: this.form.payee,
-            amount: this.form.amount,
-            account: this.form.account,
-            notes: this.form.notes,
-          },
-        });
-        console.log("RES: ", response);
-        this.$emit("close-modal");
-      } catch (err) {
-        console.log("ERROR: ", err);
-      }
-    },
-  },
+  
 };
 </script>

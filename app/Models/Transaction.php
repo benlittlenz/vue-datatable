@@ -10,4 +10,8 @@ class Transaction extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function scopeContains($query, $column, $operator, $value) {
+        $query->where($column, $operator, '%' . $value . '%');
+    }
 }
