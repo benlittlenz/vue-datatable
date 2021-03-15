@@ -2151,6 +2151,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Icon.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Icon.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    name: String
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Pagination.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Pagination.vue?vue&type=script&lang=js& ***!
@@ -2919,12 +2951,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.mjs");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.mjs");
 /* harmony import */ var _Components_createTransactionModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Components/createTransactionModal */ "./resources/js/Components/createTransactionModal.vue");
 /* harmony import */ var _Components_editTransactionModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Components/editTransactionModal */ "./resources/js/Components/editTransactionModal.vue");
 /* harmony import */ var _Components_Pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Components/Pagination */ "./resources/js/Components/Pagination.vue");
 /* harmony import */ var _Components_DeleteModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Components/DeleteModal */ "./resources/js/Components/DeleteModal.vue");
 /* harmony import */ var _Components_AdvancedSearch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/AdvancedSearch */ "./resources/js/Components/AdvancedSearch.vue");
+/* harmony import */ var _Components_Icon__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Components/Icon */ "./resources/js/Components/Icon.vue");
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3177,120 +3210,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+
 
 
 
@@ -3322,7 +3245,8 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
     editTransactionModal: _Components_editTransactionModal__WEBPACK_IMPORTED_MODULE_2__.default,
     Pagination: _Components_Pagination__WEBPACK_IMPORTED_MODULE_3__.default,
     DeleteModal: _Components_DeleteModal__WEBPACK_IMPORTED_MODULE_4__.default,
-    AdvancedSearch: _Components_AdvancedSearch__WEBPACK_IMPORTED_MODULE_5__.default
+    AdvancedSearch: _Components_AdvancedSearch__WEBPACK_IMPORTED_MODULE_5__.default,
+    Icon: _Components_Icon__WEBPACK_IMPORTED_MODULE_6__.default
   },
   mounted: function mounted() {
     var _this = this;
@@ -3336,7 +3260,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       }
     });
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapGetters)({
     transactions: "transactions/transactions"
   })), {}, {
     transactionList: function transactions() {
@@ -3360,7 +3284,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       }
     }
   }),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapActions)({
     deleteTransactions: "transactions/deleteTransactions"
   })), {}, {
     fetchTransactions: function fetchTransactions() {
@@ -23135,6 +23059,45 @@ component.options.__file = "resources/js/Components/DeleteModal.vue"
 
 /***/ }),
 
+/***/ "./resources/js/Components/Icon.vue":
+/*!******************************************!*\
+  !*** ./resources/js/Components/Icon.vue ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _Icon_vue_vue_type_template_id_7b50d278___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Icon.vue?vue&type=template&id=7b50d278& */ "./resources/js/Components/Icon.vue?vue&type=template&id=7b50d278&");
+/* harmony import */ var _Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Icon.vue?vue&type=script&lang=js& */ "./resources/js/Components/Icon.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _Icon_vue_vue_type_template_id_7b50d278___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Icon_vue_vue_type_template_id_7b50d278___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Components/Icon.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/Components/Pagination.vue":
 /*!************************************************!*\
   !*** ./resources/js/Components/Pagination.vue ***!
@@ -23323,6 +23286,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/Components/Icon.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/js/Components/Icon.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Icon.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Icon.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Icon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/Components/Pagination.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/Components/Pagination.vue?vue&type=script&lang=js& ***!
@@ -23417,6 +23396,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeleteModal_vue_vue_type_template_id_5f653dc7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeleteModal_vue_vue_type_template_id_5f653dc7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DeleteModal.vue?vue&type=template&id=5f653dc7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/DeleteModal.vue?vue&type=template&id=5f653dc7&");
+
+
+/***/ }),
+
+/***/ "./resources/js/Components/Icon.vue?vue&type=template&id=7b50d278&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/Components/Icon.vue?vue&type=template&id=7b50d278& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Icon_vue_vue_type_template_id_7b50d278___WEBPACK_IMPORTED_MODULE_0__.render,
+/* harmony export */   "staticRenderFns": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Icon_vue_vue_type_template_id_7b50d278___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Icon_vue_vue_type_template_id_7b50d278___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Icon.vue?vue&type=template&id=7b50d278& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Icon.vue?vue&type=template&id=7b50d278&");
 
 
 /***/ }),
@@ -24039,6 +24035,235 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Icon.vue?vue&type=template&id=7b50d278&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/Components/Icon.vue?vue&type=template&id=7b50d278& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => /* binding */ render,
+/* harmony export */   "staticRenderFns": () => /* binding */ staticRenderFns
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.name === "arrow-down"
+    ? _c(
+        "svg",
+        {
+          staticClass: "w-4 h-4",
+          attrs: {
+            fill: "none",
+            stroke: "currentColor",
+            viewBox: "0 0 24 24",
+            xmlns: "http://www.w3.org/2000/svg"
+          }
+        },
+        [
+          _c("path", {
+            attrs: {
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+              "stroke-width": "2",
+              d: "M19 9l-7 7-7-7"
+            }
+          })
+        ]
+      )
+    : _vm.name === "arrow-up"
+    ? _c(
+        "svg",
+        {
+          staticClass: "w-4 h-4",
+          attrs: {
+            fill: "none",
+            stroke: "currentColor",
+            viewBox: "0 0 24 24",
+            xmlns: "http://www.w3.org/2000/svg"
+          }
+        },
+        [
+          _c("path", {
+            attrs: {
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+              "stroke-width": "2",
+              d: "M5 15l7-7 7 7"
+            }
+          })
+        ]
+      )
+    : _vm.name === "details"
+    ? _c(
+        "svg",
+        {
+          staticClass: "w-6 h-6",
+          attrs: {
+            fill: "none",
+            stroke: "currentColor",
+            viewBox: "0 0 24 24",
+            xmlns: "http://www.w3.org/2000/svg"
+          }
+        },
+        [
+          _c("path", {
+            attrs: {
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+              "stroke-width": "2",
+              d: "M9 5l7 7-7 7"
+            }
+          })
+        ]
+      )
+    : _vm.name === "create"
+    ? _c(
+        "svg",
+        {
+          staticClass: "w-6 h-6 bg-purple-600 text-white rounded-full",
+          attrs: {
+            fill: "none",
+            stroke: "currentColor",
+            viewBox: "0 0 24 24",
+            xmlns: "http://www.w3.org/2000/svg"
+          }
+        },
+        [
+          _c("path", {
+            attrs: {
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+              "stroke-width": "2",
+              d: "M12 6v6m0 0v6m0-6h6m-6 0H6"
+            }
+          })
+        ]
+      )
+    : _vm.name === "search"
+    ? _c(
+        "svg",
+        {
+          staticClass: "w-6 h-6 text-gray-400",
+          attrs: {
+            xmlns: "http://www.w3.org/2000/svg",
+            viewBox: "0 0 24 24",
+            "stroke-width": "2",
+            stroke: "currentColor",
+            fill: "none",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        },
+        [
+          _c("rect", {
+            attrs: { x: "0", y: "0", width: "24", height: "24", stroke: "none" }
+          }),
+          _c("circle", { attrs: { cx: "10", cy: "10", r: "7" } }),
+          _c("line", { attrs: { x1: "21", y1: "21", x2: "15", y2: "15" } })
+        ]
+      )
+    : _vm.name === "cross"
+    ? _c(
+        "svg",
+        {
+          staticClass: "w-4 h-4 bg-gray-300 rounded-lg",
+          attrs: {
+            fill: "none",
+            stroke: "currentColor",
+            viewBox: "0 0 24 24",
+            xmlns: "http://www.w3.org/2000/svg"
+          }
+        },
+        [
+          _c("path", {
+            attrs: {
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+              "stroke-width": "2",
+              d: "M6 18L18 6M6 6l12 12"
+            }
+          })
+        ]
+      )
+    : _vm.name === "filter"
+    ? _c(
+        "svg",
+        {
+          staticClass: "w-5 h-5 mr-1",
+          attrs: { viewBox: "0 0 24 24", preserveAspectRatio: "xMidYMid meet" }
+        },
+        [
+          _c("g", {}, [
+            _c("path", { attrs: { d: "M0 0h24v24H0z", fill: "none" } }),
+            _c("path", {
+              attrs: {
+                d:
+                  "M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"
+              }
+            })
+          ])
+        ]
+      )
+    : _vm.name === "dropdown"
+    ? _c(
+        "svg",
+        {
+          staticClass: "fill-current h-4 w-4",
+          attrs: { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20" }
+        },
+        [
+          _c("path", {
+            attrs: {
+              d:
+                "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+            }
+          })
+        ]
+      )
+    : _vm.name === "trash"
+    ? _c(
+        "svg",
+        {
+          staticClass: "flex-shrink-0 w-4 h-4 fill-white",
+          attrs: { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20" }
+        },
+        [
+          _c("path", {
+            attrs: {
+              d:
+                "M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
+            }
+          })
+        ]
+      )
+    : _vm.name === "users"
+    ? _c(
+        "svg",
+        {
+          attrs: { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20" }
+        },
+        [
+          _c("path", {
+            attrs: {
+              d:
+                "M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z"
+            }
+          })
+        ]
+      )
+    : _vm._e()
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -25341,31 +25566,11 @@ var render = function() {
           }
         },
         [
-          _c(
-            "svg",
-            {
-              staticClass: "w-6 h-6 bg-purple-600 text-white rounded-full",
-              attrs: {
-                fill: "none",
-                stroke: "currentColor",
-                viewBox: "0 0 24 24",
-                xmlns: "http://www.w3.org/2000/svg"
-              }
-            },
-            [
-              _c("path", {
-                attrs: {
-                  "stroke-linecap": "round",
-                  "stroke-linejoin": "round",
-                  "stroke-width": "2",
-                  d: "M12 6v6m0 0v6m0-6h6m-6 0H6"
-                }
-              })
-            ]
-          ),
+          _c("icon", { attrs: { name: "create" } }),
           _vm._v(" "),
           _c("span", { staticClass: "ml-2" }, [_vm._v("Create Transaction")])
-        ]
+        ],
+        1
       )
     ]),
     _vm._v(" "),
@@ -25404,40 +25609,8 @@ var render = function() {
                 staticClass:
                   "absolute top-0 left-0 inline-flex items-center p-2"
               },
-              [
-                _c(
-                  "svg",
-                  {
-                    staticClass: "w-6 h-6 text-gray-400",
-                    attrs: {
-                      xmlns: "http://www.w3.org/2000/svg",
-                      viewBox: "0 0 24 24",
-                      "stroke-width": "2",
-                      stroke: "currentColor",
-                      fill: "none",
-                      "stroke-linecap": "round",
-                      "stroke-linejoin": "round"
-                    }
-                  },
-                  [
-                    _c("rect", {
-                      attrs: {
-                        x: "0",
-                        y: "0",
-                        width: "24",
-                        height: "24",
-                        stroke: "none"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("circle", { attrs: { cx: "10", cy: "10", r: "7" } }),
-                    _vm._v(" "),
-                    _c("line", {
-                      attrs: { x1: "21", y1: "21", x2: "15", y2: "15" }
-                    })
-                  ]
-                )
-              ]
+              [_c("icon", { attrs: { name: "search" } })],
+              1
             )
           ]),
           _vm._v(" "),
@@ -25459,30 +25632,8 @@ var render = function() {
                       }
                     }
                   },
-                  [
-                    _c(
-                      "svg",
-                      {
-                        staticClass: "w-4 h-4 bg-gray-300 rounded-lg",
-                        attrs: {
-                          fill: "none",
-                          stroke: "currentColor",
-                          viewBox: "0 0 24 24",
-                          xmlns: "http://www.w3.org/2000/svg"
-                        }
-                      },
-                      [
-                        _c("path", {
-                          attrs: {
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d: "M6 18L18 6M6 6l12 12"
-                          }
-                        })
-                      ]
-                    )
-                  ]
+                  [_c("icon", { attrs: { name: "cross" } })],
+                  1
                 ),
                 _vm._v(" "),
                 _c("span", { staticClass: "flex items-center ml-1" }, [
@@ -25525,32 +25676,14 @@ var render = function() {
                   }
                 },
                 [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "w-5 h-5",
-                      attrs: {
-                        fill: "none",
-                        stroke: "currentColor",
-                        viewBox: "0 0 24 24",
-                        xmlns: "http://www.w3.org/2000/svg"
-                      }
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          "stroke-linecap": "round",
-                          "stroke-linejoin": "round",
-                          "stroke-width": "2",
-                          d:
-                            "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        }
-                      })
-                    ]
-                  ),
+                  _c("icon", {
+                    staticClass: "text-white",
+                    attrs: { name: "trash" }
+                  }),
                   _vm._v(" "),
                   _c("span", { staticClass: "pl-2" }, [_vm._v("Delete")])
-                ]
+                ],
+                1
               )
             ])
           : _vm._e(),
@@ -25568,30 +25701,10 @@ var render = function() {
             }
           },
           [
-            _c(
-              "svg",
-              {
-                staticClass: "w-5 h-5 mr-1",
-                attrs: {
-                  viewBox: "0 0 24 24",
-                  preserveAspectRatio: "xMidYMid meet"
-                }
-              },
-              [
-                _c("g", {}, [
-                  _c("path", { attrs: { d: "M0 0h24v24H0z", fill: "none" } }),
-                  _vm._v(" "),
-                  _c("path", {
-                    attrs: {
-                      d:
-                        "M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"
-                    }
-                  })
-                ])
-              ]
-            ),
+            _c("icon", { attrs: { name: "filter" } }),
             _vm._v("\n        Filter\n      ")
-          ]
+          ],
+          1
         ),
         _vm._v(" "),
         _c("div", { staticClass: "relative ml-4" }, [
@@ -25642,26 +25755,8 @@ var render = function() {
               staticClass:
                 "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
             },
-            [
-              _c(
-                "svg",
-                {
-                  staticClass: "fill-current h-4 w-4",
-                  attrs: {
-                    xmlns: "http://www.w3.org/2000/svg",
-                    viewBox: "0 0 20 20"
-                  }
-                },
-                [
-                  _c("path", {
-                    attrs: {
-                      d:
-                        "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                    }
-                  })
-                ]
-              )
-            ]
+            [_c("icon", { attrs: { name: "dropdown" } })],
+            1
           )
         ])
       ])
@@ -25744,33 +25839,17 @@ var render = function() {
                                                 [_vm._v(_vm._s(column))]
                                               ),
                                               _vm._v(" "),
-                                              _c("span", [
-                                                _c(
-                                                  "svg",
-                                                  {
-                                                    staticClass: "w-4 h-4",
+                                              _c(
+                                                "span",
+                                                [
+                                                  _c("icon", {
                                                     attrs: {
-                                                      fill: "none",
-                                                      stroke: "currentColor",
-                                                      viewBox: "0 0 24 24",
-                                                      xmlns:
-                                                        "http://www.w3.org/2000/svg"
+                                                      name: "arrow-down"
                                                     }
-                                                  },
-                                                  [
-                                                    _c("path", {
-                                                      attrs: {
-                                                        "stroke-linecap":
-                                                          "round",
-                                                        "stroke-linejoin":
-                                                          "round",
-                                                        "stroke-width": "2",
-                                                        d: "M5 15l7-7 7 7"
-                                                      }
-                                                    })
-                                                  ]
-                                                )
-                                              ])
+                                                  })
+                                                ],
+                                                1
+                                              )
                                             ]
                                           )
                                         : _vm._e(),
@@ -25788,33 +25867,15 @@ var render = function() {
                                                 [_vm._v(_vm._s(column))]
                                               ),
                                               _vm._v(" "),
-                                              _c("span", [
-                                                _c(
-                                                  "svg",
-                                                  {
-                                                    staticClass: "w-4 h-4",
-                                                    attrs: {
-                                                      fill: "none",
-                                                      stroke: "currentColor",
-                                                      viewBox: "0 0 24 24",
-                                                      xmlns:
-                                                        "http://www.w3.org/2000/svg"
-                                                    }
-                                                  },
-                                                  [
-                                                    _c("path", {
-                                                      attrs: {
-                                                        "stroke-linecap":
-                                                          "round",
-                                                        "stroke-linejoin":
-                                                          "round",
-                                                        "stroke-width": "2",
-                                                        d: "M19 9l-7 7-7-7"
-                                                      }
-                                                    })
-                                                  ]
-                                                )
-                                              ])
+                                              _c(
+                                                "span",
+                                                [
+                                                  _c("icon", {
+                                                    attrs: { name: "arrow-up" }
+                                                  })
+                                                ],
+                                                1
+                                              )
                                             ]
                                           )
                                         : _vm._e()
@@ -26038,31 +26099,16 @@ var render = function() {
                                         "flex flex-col justify-center items-center"
                                     },
                                     [
-                                      _c("span", {}, [
-                                        _c(
-                                          "svg",
-                                          {
-                                            staticClass: "w-6 h-6",
-                                            attrs: {
-                                              fill: "none",
-                                              stroke: "currentColor",
-                                              viewBox: "0 0 24 24",
-                                              xmlns:
-                                                "http://www.w3.org/2000/svg"
-                                            }
-                                          },
-                                          [
-                                            _c("path", {
-                                              attrs: {
-                                                "stroke-linecap": "round",
-                                                "stroke-linejoin": "round",
-                                                "stroke-width": "2",
-                                                d: "M9 5l7 7-7 7"
-                                              }
-                                            })
-                                          ]
-                                        )
-                                      ])
+                                      _c(
+                                        "span",
+                                        {},
+                                        [
+                                          _c("icon", {
+                                            attrs: { name: "details" }
+                                          })
+                                        ],
+                                        1
+                                      )
                                     ]
                                   )
                                 ]

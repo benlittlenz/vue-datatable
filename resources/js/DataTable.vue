@@ -5,20 +5,7 @@
         v-on:click="openCreateTransactionModal = true"
         class="flex mr-2 focus:cursor-pointer focus:outline-none bg-purple-400 text-white py-2 px-4 rounded-lg font-bold"
       >
-        <svg
-          class="w-6 h-6 bg-purple-600 text-white rounded-full"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-          ></path>
-        </svg>
+        <icon name="create" />
         <span class="ml-2">Create Transaction</span>
       </button>
     </div>
@@ -32,20 +19,7 @@
             placeholder="Search..."
           />
           <div class="absolute top-0 left-0 inline-flex items-center p-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 text-gray-400"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-              <circle cx="10" cy="10" r="7" />
-              <line x1="21" y1="21" x2="15" y2="15" />
-            </svg>
+            <icon name="search" />
           </div>
         </div>
         <div
@@ -54,20 +28,7 @@
           class="flex items-center ml-4 bg-gray-100 px-4 py-1 text-sm rounded-lg hover:bg-gray-200 cursor-pointer"
         >
           <button @click="removeFilter(index)">
-            <svg
-              class="w-4 h-4 bg-gray-300 rounded-lg"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
+            <icon name="cross" />
           </button>
           <span class="flex items-center ml-1">
             <p class="font-semibold mr-1">{{ upperCaseFirstVal(filter.column) }}</p>
@@ -87,20 +48,7 @@
             @click.prevent="openConfirmDeleteModal = true"
             class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg inline-flex items-center"
           >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              ></path>
-            </svg>
+            <icon name="trash" class="text-white" />
             <span class="pl-2">Delete</span>
           </button>
         </div>
@@ -109,19 +57,7 @@
           @click="openFilterModal = true"
           class="flex items-center text-gray-700 px-3 py-1 border font-medium rounded focus:outline-none"
         >
-          <svg
-            viewBox="0 0 24 24"
-            preserveAspectRatio="xMidYMid meet"
-            class="w-5 h-5 mr-1"
-          >
-            <g class="">
-              <path d="M0 0h24v24H0z" fill="none" class=""></path>
-              <path
-                d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"
-                class=""
-              ></path>
-            </g>
-          </svg>
+          <icon name="filter" />
           Filter
         </button>
         <div class="relative ml-4">
@@ -137,15 +73,7 @@
           <div
             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
           >
-            <svg
-              class="fill-current h-4 w-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path
-                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-              />
-            </svg>
+            <icon name="dropdown" />
           </div>
         </div>
       </div>
@@ -186,20 +114,7 @@
                     >
                       <span class="mr-2">{{ column }}</span>
                       <span>
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5 15l7-7 7 7"
-                          ></path>
-                        </svg>
+                        <icon name="arrow-down" />
                       </span>
                     </div>
                     <div
@@ -208,20 +123,7 @@
                     >
                       <span class="mr-2">{{ column }}</span>
                       <span>
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 9l-7 7-7-7"
-                          ></path>
-                        </svg>
+                        <icon name="arrow-up" />
                       </span>
                     </div>
                   </template>
@@ -290,20 +192,7 @@
                   >
                     <div class="flex flex-col justify-center items-center">
                       <span class="">
-                        <svg
-                          class="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 5l7 7-7 7"
-                          ></path>
-                        </svg>
+                        <icon name="details" />
                       </span>
                     </div>
                   </td>
@@ -356,6 +245,7 @@ import editTransactionModal from "./Components/editTransactionModal";
 import Pagination from "./Components/Pagination";
 import DeleteModal from "./Components/DeleteModal";
 import AdvancedSearch from "./Components/AdvancedSearch";
+import Icon from './Components/Icon'
 
 export default {
   data: () => ({
@@ -382,6 +272,7 @@ export default {
     Pagination,
     DeleteModal,
     AdvancedSearch,
+    Icon
   },
 
   mounted() {
