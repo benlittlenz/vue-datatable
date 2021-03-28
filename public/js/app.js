@@ -2345,7 +2345,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _Icon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Icon */ "./resources/js/Components/Icon.vue");
+/* harmony import */ var _lib_debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/debounce */ "./resources/js/lib/debounce.js");
+/* harmony import */ var _lib_debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_lib_debounce__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Icon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Icon */ "./resources/js/Components/Icon.vue");
 //
 //
 //
@@ -2360,9 +2362,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    Icon: _Icon__WEBPACK_IMPORTED_MODULE_0__.default
+    Icon: _Icon__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
@@ -2370,9 +2373,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    value: function value() {
-      this.$emit("search-change", this.value);
-    }
+    value: _lib_debounce__WEBPACK_IMPORTED_MODULE_0___default()(function (search) {
+      this.$emit("search-change", search);
+    }, 500)
   }
 });
 
@@ -3518,6 +3521,26 @@ new vue__WEBPACK_IMPORTED_MODULE_2__.default({
   },
   store: _store__WEBPACK_IMPORTED_MODULE_0__.default
 });
+
+/***/ }),
+
+/***/ "./resources/js/lib/debounce.js":
+/*!**************************************!*\
+  !*** ./resources/js/lib/debounce.js ***!
+  \**************************************/
+/***/ ((module) => {
+
+module.exports = function debounce(fn, delay) {
+  var timeoutID = null;
+  return function () {
+    clearTimeout(timeoutID);
+    var args = arguments;
+    var that = this;
+    timeoutID = setTimeout(function () {
+      fn.apply(that, args);
+    }, delay);
+  };
+};
 
 /***/ }),
 

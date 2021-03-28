@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-
+import debounce from '../lib/debounce';
 import Icon from "./Icon";
 export default {
   components: {
@@ -24,9 +24,10 @@ export default {
   }),
 
   watch: {
-    value() {
-      this.$emit("search-change", this.value);
-    }
+    value: debounce(function (search) {
+        this.$emit("search-change", search);
+    }, 500)
+
   }
 };
 </script>
