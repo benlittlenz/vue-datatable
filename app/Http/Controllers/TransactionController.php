@@ -15,7 +15,7 @@ class TransactionController extends Controller
         $filters = json_decode($request->filters);
         //dd($filters);
         $pageLimit = $request->limit;
-        //dd($filters);
+        $searchQuery = $request->search;
 
         if($filters) {
             $query = Transaction::query();
@@ -35,7 +35,7 @@ class TransactionController extends Controller
             }
             return TransactionResource::collection($query->paginate($pageLimit));
         }
-        return TransactionResource::collection(Transaction::latest()->paginate($pageLimit))->response();
+        return TransactionResource::collection(Transaction::latest()->search($searchQuery)->paginate($pageLimit))->response();
     }
 
     public function store()

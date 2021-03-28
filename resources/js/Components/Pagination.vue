@@ -71,7 +71,7 @@
           "
         >
           Next
-          <icon name="prev"/>
+          <icon name="next" />
         </a>
       </div>
     </div>

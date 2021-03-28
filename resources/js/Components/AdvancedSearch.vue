@@ -183,14 +183,6 @@ export default {
   props: ["columns"],
 
   methods: {
-    // transformOperator(operator) {
-    //   //const operator = event.target.value;
-    //   console.log('op', operator);
-    //   if (operator === "equals") return "=";
-    //   else if (operator === "contains") return "LIKE";
-    //   else if (operator === "does not contain") return "NOT LIKE";
-    //   else return operator;
-    // },
     closeModal() {
       this.$emit("close-modal");
     },

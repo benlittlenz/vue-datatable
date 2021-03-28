@@ -11,17 +11,7 @@
     </div>
     <div class="flex items-center mt-4">
       <div class="flex flex-1 items-center pr-4">
-        <div class="relative md:w-1/3">
-          <input
-            v-model="searchQuery"
-            type="search"
-            class="w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium"
-            placeholder="Search..."
-          />
-          <div class="absolute top-0 left-0 inline-flex items-center p-2">
-            <icon name="search" />
-          </div>
-        </div>
+        <search v-on:search-change="applySearch" />
         <div
           v-for="(filter, index) in appliedFilters"
           :key="index"
@@ -246,6 +236,7 @@ import Pagination from "./Components/Pagination";
 import DeleteModal from "./Components/DeleteModal";
 import AdvancedSearch from "./Components/AdvancedSearch";
 import Icon from './Components/Icon'
+import Search from "./Components/Search";
 
 export default {
   data: () => ({
@@ -272,7 +263,8 @@ export default {
     Pagination,
     DeleteModal,
     AdvancedSearch,
-    Icon
+    Icon,
+    Search
   },
 
   mounted() {
@@ -295,18 +287,18 @@ export default {
     }),
 
     transactionList: function transactions() {
-      if (this.searchQuery) {
-        return this.transactions.data.filter((transaction) => {
-          return Object.values(transaction).some((value) => {
-            console.log('value', value)
-            return (
-              String(value)
-                .toLowerCase()
-                .includes(this.searchQuery)
-            );
-          });
-        });
-      }
+      // if (this.searchQuery) {
+      //   return this.transactions.data.filter((transaction) => {
+      //     return Object.values(transaction).some((value) => {
+      //       console.log('value', value)
+      //       return (
+      //         String(value)
+      //           .toLowerCase()
+      //           .includes(this.searchQuery)
+      //       );
+      //     });
+      //   });
+      // }
 
       if (this.transactions.data) {
         const column = this.sort.column;
@@ -327,13 +319,14 @@ export default {
     ...mapActions({
       deleteTransactions: "transactions/deleteTransactions",
     }),
-    async fetchTransactions(page = 1, filters = "") {
+    async fetchTransactions(page = 1, search = "", filters = "") {
       //Fetch transactions
       const limit = this.limit;
       await this.$store.dispatch("transactions/fetchTransactions", {
         limit,
         page,
         filters,
+        search
       });
       this.loading = false;
     },
@@ -403,10 +396,15 @@ export default {
     },
 
     async applyFilters(filters) {
-      await this.fetchTransactions(1, JSON.stringify(filters));
+      await this.fetchTransactions(1, '', JSON.stringify(filters));
       this.openFilterModal = false;
       //this.displayFilters(filters);
       this.appliedFilters = filters;
+    },
+
+    async applySearch(search) {
+      console.log({search})
+      //await this.fetchTransactions(1, value, '');
     },
 
     async removeFilter(index) {
