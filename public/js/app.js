@@ -3312,22 +3312,22 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
           _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var page, search, filters, limit;
+        var page, filters, limit, search;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
-                search = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : "";
-                filters = _arguments.length > 2 && _arguments[2] !== undefined ? _arguments[2] : "";
+                filters = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : "";
                 //Fetch transactions
                 limit = _this2.limit;
+                search = _this2.searchQuery;
                 _context.next = 6;
                 return _this2.$store.dispatch("transactions/fetchTransactions", {
                   limit: limit,
                   page: page,
-                  filters: filters,
-                  search: search
+                  search: search,
+                  filters: filters
                 });
 
               case 6:
@@ -3440,16 +3440,18 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       }))();
     },
     applySearch: function applySearch(search) {
+      var _this5 = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                console.log({
-                  search: search
-                }); //await this.fetchTransactions(1, value, '');
+                _this5.searchQuery = search;
+                _context4.next = 3;
+                return _this5.fetchTransactions();
 
-              case 1:
+              case 3:
               case "end":
                 return _context4.stop();
             }
@@ -3458,7 +3460,7 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
       }))();
     },
     removeFilter: function removeFilter(index) {
-      var _this5 = this;
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
@@ -3467,10 +3469,10 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
               case 0:
                 console.log("INDEX", index);
 
-                _this5.appliedFilters.splice(index, 1);
+                _this6.appliedFilters.splice(index, 1);
 
                 _context5.next = 4;
-                return _this5.fetchTransactions(1, JSON.stringify(_this5.appliedFilters));
+                return _this6.fetchTransactions(1, JSON.stringify(_this6.appliedFilters));
 
               case 4:
               case "end":
@@ -3665,17 +3667,17 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__W
 var actions = {
   fetchTransactions: function fetchTransactions(_ref3, _ref4) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      var commit, limit, page, filters, _yield$axios$get, data;
+      var commit, limit, page, search, filters, _yield$axios$get, data;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               commit = _ref3.commit;
-              limit = _ref4.limit, page = _ref4.page, filters = _ref4.filters;
+              limit = _ref4.limit, page = _ref4.page, search = _ref4.search, filters = _ref4.filters;
               _context.prev = 2;
               _context.next = 5;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/transactions?limit=".concat(limit, "&page=").concat(page, "&filters=").concat(filters));
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/transactions?limit=".concat(limit, "&page=").concat(page, "&search=").concat(search, "&filters=").concat(filters));
 
             case 5:
               _yield$axios$get = _context.sent;

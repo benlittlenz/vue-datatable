@@ -319,14 +319,15 @@ export default {
     ...mapActions({
       deleteTransactions: "transactions/deleteTransactions",
     }),
-    async fetchTransactions(page = 1, search = "", filters = "") {
+    async fetchTransactions(page = 1, filters = "") {
       //Fetch transactions
       const limit = this.limit;
+      const search = this.searchQuery
       await this.$store.dispatch("transactions/fetchTransactions", {
         limit,
         page,
+        search,
         filters,
-        search
       });
       this.loading = false;
     },
@@ -403,8 +404,8 @@ export default {
     },
 
     async applySearch(search) {
-      console.log({search})
-      //await this.fetchTransactions(1, value, '');
+      this.searchQuery = search;
+      await this.fetchTransactions();
     },
 
     async removeFilter(index) {
